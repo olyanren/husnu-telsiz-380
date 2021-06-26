@@ -1,0 +1,77 @@
+<resources>
+    <string name="app_name">Denge Telekom</string>
+    <string name="read_barcode_help">Lütfen karekodu okutunuz. Örnek karekod:</string>
+    <string name="barcode_read_from_camera">QR Kod Okutma</string>
+    <string name="barcode_result">QR Kod Sonucu</string>
+    <string name="dialog_barcode_title">QR Kod Numarası Giriniz</string>
+    <string name="cancel">İptal</string>
+    <string name="search">Ara</string>
+    <string name="help_title">Yardım</string>
+
+
+    <string name="app_intro_skip_button">GEÇ</string>
+    <string name="app_intro_next_button">SONRAKİ</string>
+    <string name="app_intro_back_button">ÖNCEKİ</string>
+    <string name="app_intro_done_button">KAPAT</string>
+    <string name="barcode_read_cancelled">Sorgulama iptal edildi</string>
+    <string name="barcode_write_cancelled">Yazma işlemi iptal edildi</string>
+    <string name="invalid_barcode_format">QR Kod formatı geçersiz</string>
+    <string name="eser_ad">Eser Adı</string>
+    <string name="eser_sahibi">Eser Sahibi</string>
+    <string name="yay_nevi">Yayınevi</string>
+    <string name="btn_return_home">Ana Ekrana Dön</string>
+    <string name="btn_send_notification">Bildirim Gönder</string>
+    <string name="barcode_result_not_found">Aramanıza uygun sonuç bulunamadı</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_phone">Telsiz Numarası</string>
+    <string name="prompt_password">Şifre</string>
+
+    <string name="welcome">"Hoşgeldiniz!"</string>
+    <string name="invalid_username">Geçerli bir kullanıcı adı giriniz</string>
+    <string name="invalid_password">Şifrenizi giriniz</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="company_name"></string>
+    <string name="text_demo">Demo</string>
+    <string name="text_date">10/01/2021</string>
+    <string name="demo_text_task_title">1. Tur - 22:00</string>
+    <string name="demo_text_task_detail_title">1. Tur Kontrol Noktası</string>
+    <string name="demo_text_state">Hazır</string>
+    <string name="demo_text_validity">20%</string>
+    <string name="demo_text_time">20 Dakika</string>
+    <string name="label_time">Süre:</string>
+    <string name="label_validity">Geçerlilik:</string>
+    <string name="label_state">Durum:</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="label_start_date">Başlama Zamanı:</string>
+    <string name="label_finish_date">Bitiş Zamanı:</string>
+    <string name="demo_text_start_time">22:00</string>
+    <string name="demo_text_finish_date">22:10</string>
+    <string name="btn_login">Giriş Yap</string>
+    <string name="btn_report">Rapor</string>
+    <string name="btn_start">Başla</string>
+    <string name="btn_read_barcode">QR Tara</string>
+    <string name="btn_todo">Yapılacak İşler</string>
+    <string name="btn_add_explanation">Açıklama Ekle</string>
+    <string name="btn_complete_task">Görevi Tamamla</string>
+    <string name="task_model_null_error">Görev detay bilgileri getirilirken hata oluştu</string>
+    <string name="todo_title">Yapılacak İşler</string>
+    <string name="explanation_title">Açıklama Ekle</string>
+    <string name="btn_save">Kaydet</string>
+    <string name="btn_add_photo">Foto Ekle</string>
+    <string name="yes">Evet</string>
+    <string name="no">Hayır</string>
+    <string name="remember_me">Beni Hatırla</string>
+    <string name="btn_read_nfc">NFC Tara</string>
+    <string name="btn_logout">Çıkış Yap</string>
+    <string name="refresh">Yenile</string>
+    <string name="demo_text_name">Yer Bilgisi</string>
+    <string name="btn_previous">Önceki Görev</string>
+    <string name="btn_write_nfc">NFC Yaz</string>
+    <string name="register_completing">Kayıt Tamamlanıyor</string>
+    <string name="unhandled_error">Beklenmeyen bir hata oluştu</string>
+    <string name="label_location">Kontrol Noktası:</string>
+    <string name="message_saved_explanation">Açıklama eklendi</string>
+
+</resources>

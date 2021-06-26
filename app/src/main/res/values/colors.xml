@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#ededf0</color>
+    <color name="colorPrimaryDark">#B5B5B8</color>
+    <color name="colorAccent">#03DAC5</color>
+    <color name="black">#000</color>
+
+    <color name="red">#F44336</color>
+    <color name="turquoise">#2196F3</color>
+    <color name="white">#fff</color>
+    <color name="bg_splash">#FFFFFF</color>
+    <color name="colorBackground">#ededf0</color>
+    <color name="colorCompanyName">#1690ce</color>
+    <color name="grey">#4C4E51</color>
+    <color name="grey_dark">#F44336</color>
+    <color name="red_dark">#750F08</color>
+</resources>

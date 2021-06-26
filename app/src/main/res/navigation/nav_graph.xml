@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.dengetelekom.telsiz.ui.ui.login.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_taskFragment"
+            app:launchSingleTop="true"
+            app:popUpTo="@+id/nav_graph"
+            app:popUpToInclusive="true"
+            app:destination="@id/taskFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/taskFragment"
+        android:name="com.dengetelekom.telsiz.ui.TaskFragment"
+        android:label="fragment_task_list"
+        tools:layout="@layout/fragment_task_list" >
+        <action
+            android:id="@+id/action_taskFragment_to_taskDetailFragment"
+            app:destination="@id/taskDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/taskDetailFragment"
+        android:name="com.dengetelekom.telsiz.ui.TaskDetailFragment"
+        android:label="TaskDetailFragment" >
+        <action
+            android:id="@+id/action_taskDetailFragment_to_taskTodoFragment"
+            app:destination="@id/taskTodoFragment" />
+        <action
+            android:id="@+id/action_taskDetailFragment_to_taskExplanationFragment"
+            app:destination="@id/taskExplanationFragment" />
+        <action
+            android:id="@+id/action_taskDetailFragment_to_taskFragment"
+            app:destination="@id/taskFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/taskTodoFragment"
+        android:name="com.dengetelekom.telsiz.ui.TaskTodoFragment"
+        android:label="TaskTodoFragment" >
+        <action
+            android:id="@+id/action_taskTodoFragment_to_taskDetailFragment"
+            app:destination="@id/taskDetailFragment" />
+        <action
+            android:id="@+id/action_taskTodoFragment_to_taskExplanationFragment"
+            app:destination="@id/taskExplanationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/taskExplanationFragment"
+        android:name="com.dengetelekom.telsiz.ui.TaskExplanationFragment"
+        android:label="TaskExplanationFragment" >
+        <action
+            android:id="@+id/action_taskExplanationFragment_to_taskDetailFragment"
+            app:destination="@id/taskDetailFragment" />
+    </fragment>
+</navigation>
