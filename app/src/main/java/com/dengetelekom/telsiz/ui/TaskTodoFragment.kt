@@ -40,11 +40,11 @@ class TaskTodoFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-            taskModel = SharedPreferencesUtil.readTask(requireContext())
-            if (taskModel.todos == null){
-                taskModel.todos = mutableListOf()
-                SharedPreferencesUtil.writeTask(requireContext(),taskModel )
-            }
+        taskModel = SharedPreferencesUtil.readTask(requireContext())
+        if (taskModel.todos == null) {
+            taskModel.todos = mutableListOf()
+            SharedPreferencesUtil.writeTask(requireContext(), taskModel)
+        }
 
 
     }
@@ -90,7 +90,7 @@ class TaskTodoFragment : Fragment() {
                         Toast.makeText(requireContext(), resource.data?.message, Toast.LENGTH_SHORT)
                             .show()
                         taskModel.isTodoAdded = true
-                        SharedPreferencesUtil.writeTask(requireContext(),taskModel )
+                        SharedPreferencesUtil.writeTask(requireContext(), taskModel)
 
                         goDetail()
 
@@ -133,7 +133,11 @@ class TaskTodoFragment : Fragment() {
                                 val cb = CheckBox(requireContext())
                                 cb.text = item.title
                                 cb.tag = item.id
-                                cb.isChecked = taskModel.todos?.contains(item.id)!!
+                                cb.isChecked =
+                                    if (taskModel.todos == null) true
+                                    else taskModel.todos?.contains(item.id)!!
+
+
                                 if (cb.isChecked) todoList.add(cb.tag.toString().toInt())
                                 else todoList.remove(cb.tag.toString().toInt())
                                 cb.setOnCheckedChangeListener { buttonView, isChecked ->
