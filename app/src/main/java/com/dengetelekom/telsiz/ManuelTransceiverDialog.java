@@ -16,7 +16,7 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 
 public class ManuelTransceiverDialog extends Dialog implements
-        android.view.View.OnClickListener {
+        View.OnClickListener {
     private StringBuilder sb=new StringBuilder();
     private ManuelBandrolDialogResponse dialogResponse;
     private EditText barcodeStart, barcodeMiddle, barcodeEnd;

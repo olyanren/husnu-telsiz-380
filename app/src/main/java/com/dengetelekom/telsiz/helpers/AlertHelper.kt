@@ -3,6 +3,7 @@ package com.dengetelekom.telsiz.helpers
 import android.app.AlertDialog
 import android.content.Context
 import android.content.DialogInterface
+import com.dengetelekom.telsiz.R
 
 
 object AlertHelper {
@@ -12,7 +13,7 @@ object AlertHelper {
         alertDialog.setMessage(message)
         alertDialog.setButton(
             AlertDialog.BUTTON_POSITIVE,
-            "Tamam"
+            context.getText(R.string.ok)
         ) { dialog, _ -> dialog.dismiss() }
         alertDialog.show()
     }

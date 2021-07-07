@@ -125,7 +125,10 @@ class TaskDetailFragment : Fragment() {
             view?.findNavController()?.navigate(action)
         }
         btnCompleteTour.text =
-            if (taskModel.completedDate != null && taskModel.completedDate != "") "Görev Tamamlandı" else "Görevi Tamamla"
+            if (taskModel.completedDate != null && taskModel.completedDate != "")
+                getText(R.string.mission_is_completed) else
+                getText(R.string.complete_mission)
+
 
         btnCompleteTour.setOnClickListener {
             when {
@@ -156,8 +159,8 @@ class TaskDetailFragment : Fragment() {
 
     private fun complete() {
         AlertDialog.Builder(requireContext())
-            .setTitle("Görevi Tamamla")
-            .setMessage("Görevi tamamlamak istediğinize emin misiniz?")
+            .setTitle(R.string.complete_mission)
+            .setMessage(R.string.complete_mission_question)
             .setIcon(android.R.drawable.ic_dialog_alert)
             .setPositiveButton(R.string.yes) { _, _ ->
                 run {
@@ -251,11 +254,11 @@ class TaskDetailFragment : Fragment() {
     private fun setQrCodeResult(barcodeNo: String) {
 
         if (barcodeNo != taskModel.name) {
-            Toast.makeText(activity, "Numara geçersiz", Toast.LENGTH_LONG).show()
+            Toast.makeText(activity, resources.getText(R.string.number_invalid), Toast.LENGTH_LONG).show()
             taskModel.isQrCodeValid = false
             SharedPreferencesUtil.writeTask(requireContext(), taskModel)
         } else {
-            Toast.makeText(activity, "Numara geçerli", Toast.LENGTH_LONG).show()
+            Toast.makeText(activity, resources.getText(R.string.number_valid), Toast.LENGTH_LONG).show()
             taskModel.isQrCodeValid = true
             SharedPreferencesUtil.writeTask(requireContext(), taskModel)
             btnTodo.visibility = View.VISIBLE
@@ -267,11 +270,11 @@ class TaskDetailFragment : Fragment() {
     private fun setNFCResult(barcodeNo: String) {
 
         if (barcodeNo != taskModel.name) {
-            Toast.makeText(activity, "Numara geçersiz", Toast.LENGTH_LONG).show()
+            Toast.makeText(activity, resources.getText(R.string.number_invalid), Toast.LENGTH_LONG).show()
             taskModel.isNcfValid = false
             SharedPreferencesUtil.writeTask(requireContext(), taskModel)
         } else {
-            Toast.makeText(activity, "Numara geçerli", Toast.LENGTH_LONG).show()
+            Toast.makeText(activity, resources.getText(R.string.number_valid), Toast.LENGTH_LONG).show()
             taskModel.isNcfValid = true
             SharedPreferencesUtil.writeTask(requireContext(), taskModel)
             if (Constants.BARCODE_READER_ACTIVE){

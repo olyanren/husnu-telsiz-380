@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
+import com.dengetelekom.telsiz.R
 
 import com.dengetelekom.telsiz.databinding.FragmentTaskBinding
 import com.dengetelekom.telsiz.models.TaskModel
@@ -40,7 +41,10 @@ class TaskRecyclerViewAdapter(
         holder.name.text = item.name
 
         holder.title.text = "TUR - ${item.startDate}"
-        holder.state.text = if(item.completedDate==null|| item.completedDate=="") "YAPILMADI" else "YAPILDI"
+        holder.state.text = if(item.completedDate==null|| item.completedDate=="")
+            holder.state.resources.getText(R.string.not_completed) else
+            holder.state.resources.getText(R.string.completed)
+
         holder.gecerlilik.text = index.toString() + "/" + values.size.toString()
         holder.bind(item, itemClickListener)
     }

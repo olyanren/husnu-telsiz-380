@@ -74,7 +74,7 @@ class TaskFragment : Fragment(), TaskRecyclerViewAdapter.OnItemClickListener {
                         }
                         Resource.Status.ERROR -> {
                             it.message?.let { it1 ->
-                                AlertHelper.showInfoDialog(requireContext(),"Bilgilendirme",
+                                AlertHelper.showInfoDialog(requireContext(),resources.getString(R.string.notify),
                                     it1)
                             }
                         }
