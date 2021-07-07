@@ -73,13 +73,13 @@
     <string name="unhandled_error">Beklenmeyen bir hata oluştu</string>
     <string name="label_location">Kontrol Noktası:</string>
     <string name="message_saved_explanation">Açıklama eklendi</string>
-    <string name="not_completed">Not Completed</string>
-    <string name="completed">Completed</string>
-    <string name="number_valid">Number is valid</string>
-    <string name="number_invalid">Number is invalid</string>
-    <string name="notify">Notification</string>
-    <string name="ok">OK</string>
-    <string name="complete_mission">Complete Mission</string>
-    <string name="complete_mission_question">Do you want to complete the mission?</string>
-    <string name="mission_is_completed">Mission is completed</string>
+    <string name="not_completed">Tamamlanmadı</string>
+    <string name="completed">Tamamlandı</string>
+    <string name="number_valid">Numara geçerli</string>
+    <string name="number_invalid">Numara geçersiz</string>
+    <string name="notify">Bilgilendirme</string>
+    <string name="ok">Tamam</string>
+    <string name="complete_mission">Görevi Tamamla</string>
+    <string name="complete_mission_question">Görevi tamamlamak istediğinize emin misiniz?</string>
+    <string name="mission_is_completed">Görev tamamlandı</string>
 </resources>
