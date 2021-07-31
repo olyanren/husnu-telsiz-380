@@ -67,6 +67,7 @@
     <string name="btn_logout">Çıkış Yap</string>
     <string name="refresh">Yenile</string>
     <string name="demo_text_name">Yer Bilgisi</string>
+    <string name="btn_urgent_notification">Özel Durum Bildirimi</string>
     <string name="btn_previous">Önceki Görev</string>
     <string name="btn_write_nfc">NFC Yaz</string>
     <string name="register_completing">Kayıt Tamamlanıyor</string>

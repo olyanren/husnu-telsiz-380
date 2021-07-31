@@ -29,7 +29,8 @@ interface TransceiverService {
 
     @PUT("tasks/explanations")
     suspend fun addExplanation(@Body request: ExplanationAddRequestModel): NetworkResponse<TaskResponseModel, RetrofitError>
-
+    @POST("urgent-notification")
+    suspend fun addUrgentNotification(@Body request: UrgentNotificationAddRequestModel): NetworkResponse<TaskResponseModel, RetrofitError>
     @PUT("tasks/todos")
     suspend fun addTodos(@Body request: ToDoAddRequestModel): ApiResponseModel
 
@@ -40,5 +41,11 @@ interface TransceiverService {
     @POST("tasks/upload-photos")
     suspend fun uploadPhoto(@Part("task_id") taskId: RequestBody?,
                             @Part("location_id") locationId: RequestBody?,
+                            @Part file: MultipartBody.Part?): ApiResponseModel
+
+    @Multipart
+    @POST("urgent-notification/photo")
+    suspend fun uploadUrgentNotificationPhoto(
+                            @Part("explanation") explanation: RequestBody?,
                             @Part file: MultipartBody.Part?): ApiResponseModel
 }

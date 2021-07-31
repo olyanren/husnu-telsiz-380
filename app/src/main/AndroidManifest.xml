@@ -5,13 +5,18 @@
 
     <uses-sdk tools:overrideLibrary="androidx.camera.camera2, androidx.camera.core, androidx.camera.view, androidx.camera.lifecycle" />
 
-    <uses-feature android:name="android.hardware.camera"  android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.NFC" />
-    <uses-feature android:name="android.hardware.nfc" android:required="true" />
 
+    <uses-permission android:name="android.permission.NFC" />
+
+    <uses-feature
+        android:name="android.hardware.nfc"
+        android:required="true" />
 
     <queries>
         <intent>
@@ -25,8 +30,10 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+        <activity android:name=".ui.UrgentNotificationActivity"></activity>
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.dengetelekom.telsiz.fileprovider"
@@ -37,7 +44,9 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
-        <activity android:name=".SplashActivity" android:theme="@style/SplashTheme">
+        <activity
+            android:name=".SplashActivity"
+            android:theme="@style/SplashTheme">
             <meta-data
                 android:name="com.google.android.gms.version"
                 android:value="@integer/google_play_services_version" />
@@ -48,15 +57,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity" />
         <activity
             android:name=".ReadBarcodeActivity"
             android:theme="@style/AppThemeForBarcodeRead" />
         <activity
             android:name=".ReadNcfActivity"
-            android:theme="@style/AppThemeForBarcodeRead" >
-        </activity>
-
+            android:theme="@style/AppThemeForBarcodeRead"></activity>
     </application>
 
 </manifest>

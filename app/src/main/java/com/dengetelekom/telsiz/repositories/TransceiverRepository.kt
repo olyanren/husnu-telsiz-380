@@ -13,9 +13,11 @@ class TransceiverRepository : BaseRepository {
     suspend fun explanationTitles() = provider.explanationTitles()
     suspend fun todos() = provider.todos()
     suspend fun addExplanation(request: ExplanationAddRequestModel) = provider.addExplanation(request)
+    suspend fun addUrgentNotification(request: UrgentNotificationAddRequestModel) = provider.addUrgentNotification(request)
     suspend fun addTodos(request: ToDoAddRequestModel) = provider.addTodos(request)
     suspend fun complete(request: TaskCompleteRequestModel) = provider.complete(request)
     suspend fun uploadPhoto(taskId: Int,locationId:String, fileUri: String) = provider.uploadPhoto(taskId,locationId,fileUri)
+    suspend fun uploadUrgentNotificationPhoto(explanation:String, fileUri: String) = provider.uploadUrgentNotificationPhoto(explanation, fileUri)
 
 
 }

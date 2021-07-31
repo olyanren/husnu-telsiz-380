@@ -46,6 +46,10 @@ class TransceiverProvider {
         val service = getApiClient().create(TransceiverService::class.java)
         return service.addExplanation(request)
     }
+    suspend fun addUrgentNotification(request: UrgentNotificationAddRequestModel): NetworkResponse<TaskResponseModel, RetrofitError> {
+        val service = getApiClient().create(TransceiverService::class.java)
+        return service.addUrgentNotification(request)
+    }
     suspend fun addTodos(request: ToDoAddRequestModel): ApiResponseModel {
         val service = getApiClient().create(TransceiverService::class.java)
         return service.addTodos(request)
@@ -66,5 +70,18 @@ class TransceiverProvider {
         val taskIdBody = RequestBody.create(MultipartBody.FORM, taskId.toString())
         val locationIdBody = RequestBody.create(MultipartBody.FORM, locationId)
         return service.uploadPhoto(taskIdBody,locationIdBody,body)
+    }
+    suspend fun uploadUrgentNotificationPhoto(explanation:String,fileUri: String): ApiResponseModel {
+        val service = getApiClient().create(TransceiverService::class.java)
+        val file =  File(fileUri)
+        val requestFile: RequestBody = RequestBody.create(
+            MediaType.parse("image/jpeg"),
+            file
+        )
+        val body = MultipartBody.Part.createFormData("picture", file.name, requestFile)
+
+
+        val explanationBody = RequestBody.create(MultipartBody.FORM, explanation)
+        return service.uploadUrgentNotificationPhoto(explanationBody,body)
     }
 }

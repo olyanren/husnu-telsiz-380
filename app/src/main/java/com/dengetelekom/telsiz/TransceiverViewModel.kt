@@ -157,6 +157,24 @@ class TransceiverViewModel(private val repository: TransceiverRepository) : View
             )
         }
     }
+    fun addUrgentNotification(request: UrgentNotificationAddRequestModel) = liveData {
+        emit(Resource.loading(data = null))
+        try {
+            when (val resp= repository.addUrgentNotification(request)) {
+                is NetworkResponse.Success -> emit(Resource.success(data = resp.body.message))
+                is NetworkResponse.ApiError -> emit(resp.body.message.let { Resource.apiError(message = it,data = resp.body) })
+                is NetworkResponse.NetworkError -> throw java.lang.Exception()
+                is NetworkResponse.UnknownError -> throw java.lang.Exception()
+            }
+        } catch (exception: Exception) {
+            emit(
+                Resource.error(
+                    data = null, message = exception.message
+                        ?: "Beklenmeyen bir hata oluştu"
+                )
+            )
+        }
+    }
 
     fun uploadPhoto(taskId: Int,locationId:String, fileUri: String) = liveData {
         emit(Resource.loading(data = null))
@@ -171,7 +189,19 @@ class TransceiverViewModel(private val repository: TransceiverRepository) : View
             )
         }
     }
-
+    fun uploadUrgentNotificationPhoto(explanation:String, fileUri: String) = liveData {
+        emit(Resource.loading(data = null))
+        try {
+            emit(Resource.success(data = repository.uploadUrgentNotificationPhoto(explanation, fileUri)))
+        } catch (exception: Exception) {
+            emit(
+                Resource.error(
+                    data = null, message = exception.message
+                        ?: "Beklenmeyen bir hata oluştu"
+                )
+            )
+        }
+    }
     fun addTodos(request: ToDoAddRequestModel) = liveData {
         emit(Resource.loading(data = null))
         try {
