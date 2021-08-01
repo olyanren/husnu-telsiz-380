@@ -204,11 +204,13 @@ class UrgentNotificationFragment : Fragment() {
     private fun openCameraForImage() {
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
 
-            takePictureIntent.resolveActivity(requireContext().packageManager)?.also {
+          takePictureIntent.resolveActivity(requireContext().packageManager)?.also {
+
                 // Create the File where the photo should go
                 val photoFile: File? = try {
                     createImageFile()
                 } catch (ex: IOException) {
+                    Toast.makeText(requireContext(),ex.message,Toast.LENGTH_LONG).show();
                     ex.message?.let { it1 -> Log.e("DENGE_TELSIZ_TAKE_PHOTO", it1) }
                     null
                 }
@@ -220,13 +222,13 @@ class UrgentNotificationFragment : Fragment() {
                     takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
                     startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
                 }
-            }
+           }
         }
     }
 
     @Throws(IOException::class)
     private fun createImageFile(): File {
-        // Create an image file name
+
         val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
         val storageDir: File? = context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return File.createTempFile(
