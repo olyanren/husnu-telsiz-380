@@ -134,7 +134,7 @@ class TaskTodoFragment : Fragment() {
                                 cb.text = item.title
                                 cb.tag = item.id
                                 cb.isChecked =
-                                    if (taskModel.todos == null) true
+                                    if (taskModel.todos == null||item.isChecked) true
                                     else taskModel.todos?.contains(item.id)!!
 
 

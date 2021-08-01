@@ -42,13 +42,17 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView"
         android:showDividers="middle"
         android:divider="@drawable/empty_tall_divider"
-        android:weightSum="3.6"
+
         android:visibility="gone">
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
         <Button
             android:id="@+id/btn_urgent_notification"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:layout_weight="1.1"
+
             android:background="@drawable/exit_button"
             android:drawableStart="@drawable/flash"
             android:paddingStart="10dp"
@@ -62,9 +66,9 @@
 
         <Button
             android:id="@+id/btn_previous"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:layout_weight="0.8"
+
             android:background="@drawable/exit_button"
             android:drawableStart="@drawable/ic_back"
             android:paddingStart="10dp"
@@ -76,9 +80,9 @@
             />
         <Button
             android:id="@+id/btn_refresh"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:layout_weight="0.9"
+
             android:background="@drawable/exit_button"
             android:drawableStart="@drawable/ic_refresh"
             android:paddingStart="10dp"
@@ -94,9 +98,9 @@
         <Button
             android:id="@+id/btn_logout"
             style="?android:attr/borderlessButtonStyle"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:layout_weight="0.8"
+
             android:background="@drawable/exit_button"
             android:drawableStart="@drawable/ic_exit"
             android:paddingStart="10dp"

@@ -96,8 +96,8 @@ class TaskFragment : Fragment(), TaskRecyclerViewAdapter.OnItemClickListener {
     }
     private fun setNFCBarcodeStatus(data: List<TaskModel>?) {
         if (data?.size != null && data.isNotEmpty()) {
-            Constants.NFC_READER_ACTIVE = data[0].nfcReaderActive == "1"
-            Constants.BARCODE_READER_ACTIVE = data[0].barcodeReaderActive == "1"
+            Constants.NFC_READER_ACTIVE = data[0].nfcReaderActive == "1"||data[0].nfcReaderActive == "true"
+            Constants.BARCODE_READER_ACTIVE = data[0].barcodeReaderActive == "1"||data[0].barcodeReaderActive == "true"
         }
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
