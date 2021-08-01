@@ -1,7 +1,9 @@
 package com.dengetelekom.telsiz.ui
 
+import android.Manifest
 import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -11,6 +13,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -36,8 +39,8 @@ import java.util.*
 private const val ARG_PARAM_TASK = "taskDetail"
 private const val REQUEST_IMAGE_CAPTURE = 1
 private const val THUMBNAIL_SIZE = 50
-private const val MY_CAMERA_PERMISSION_CODE = 100
 
+private val MY_CAMERA_REQUEST_CODE = 100
 /**
  * A simple [Fragment] subclass.
  * Use the [TaskDetailFragment.newInstance] factory method to
@@ -136,7 +139,51 @@ class TaskExplanationFragment : Fragment() {
             }
         })
     }
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String?>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == MY_CAMERA_REQUEST_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(requireContext(), getString(R.string.request_camera_permission_result), Toast.LENGTH_LONG).show()
+                openCameraForImage()
+            } else {
+                Toast.makeText(requireContext(), getString(R.string.request_camera_permission_result_error), Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+    private fun dispatchTakePictureIntent() {
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.CAMERA
+            ) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(arrayOf(Manifest.permission.CAMERA), MY_CAMERA_REQUEST_CODE);
+        }
+    }
+    private fun openCameraForImage(){
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
 
+            takePictureIntent.resolveActivity(requireContext().packageManager)?.also {
+                // Create the File where the photo should go
+                val photoFile: File? = try {
+                    createImageFile()
+                } catch (ex: IOException) {
+                    ex.message?.let { it1 -> Log.e("DENGE_TELSIZ_TAKE_PHOTO", it1) }
+                    null
+                }
+                // Continue only if the File was successfully created
+                photoFile?.also {
+                    val photoURI: Uri = FileProvider.getUriForFile(
+                        requireContext(), context?.packageName + ".fileprovider", it
+                    )
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
+                }
+            }
+        }
+    }
     private fun saveImage() {
         if (!this::currentPhotoPath.isInitialized) {
             btnSave.text = getString(R.string.btn_save)
@@ -223,30 +270,7 @@ class TaskExplanationFragment : Fragment() {
     }
 
 
-    private fun dispatchTakePictureIntent() {
 
-        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-
-            takePictureIntent.resolveActivity(requireContext().packageManager)?.also {
-                // Create the File where the photo should go
-                val photoFile: File? = try {
-                    createImageFile()
-                } catch (ex: IOException) {
-                    ex.message?.let { it1 -> Log.e("DENGE_TELSIZ_TAKE_PHOTO", it1) }
-                    null
-                }
-                // Continue only if the File was successfully created
-                photoFile?.also {
-                    val photoURI: Uri = FileProvider.getUriForFile(
-                        requireContext(), context?.packageName + ".fileprovider", it
-                    )
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-                }
-            }
-        }
-
-    }
 
     @Throws(IOException::class)
     private fun createImageFile(): File {

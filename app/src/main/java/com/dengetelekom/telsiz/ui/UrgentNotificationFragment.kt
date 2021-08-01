@@ -1,7 +1,9 @@
 package com.dengetelekom.telsiz.ui
 
+import android.Manifest
 import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
@@ -11,15 +13,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import com.dengetelekom.telsiz.R
 import com.dengetelekom.telsiz.TransceiverViewModel
 import com.dengetelekom.telsiz.factories.TransceiverViewModelFactory
-import com.dengetelekom.telsiz.helpers.SharedPreferencesUtil
 import com.dengetelekom.telsiz.models.*
 import com.dengetelekom.telsiz.repositories.TransceiverRepository
 import java.io.*
@@ -41,7 +41,7 @@ private const val MY_CAMERA_PERMISSION_CODE = 100
  */
 class UrgentNotificationFragment : Fragment() {
 
-
+    private val MY_CAMERA_REQUEST_CODE = 100
     private lateinit var textExplanation: TextView
     private lateinit var transceiverViewModel: TransceiverViewModel
     private lateinit var imgView: ImageView
@@ -178,9 +178,30 @@ class UrgentNotificationFragment : Fragment() {
         }
     }
 
-
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<String?>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == MY_CAMERA_REQUEST_CODE) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                Toast.makeText(requireContext(), getString(R.string.request_camera_permission_result), Toast.LENGTH_LONG).show()
+                openCameraForImage()
+            } else {
+                Toast.makeText(requireContext(), getString(R.string.request_camera_permission_result_error), Toast.LENGTH_LONG).show()
+            }
+        }
+    }
     private fun dispatchTakePictureIntent() {
+        if (checkSelfPermission(requireContext(),Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(arrayOf(Manifest.permission.CAMERA), MY_CAMERA_REQUEST_CODE);
+        }
 
+
+    }
+
+    private fun openCameraForImage() {
         Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
 
             takePictureIntent.resolveActivity(requireContext().packageManager)?.also {
@@ -201,7 +222,6 @@ class UrgentNotificationFragment : Fragment() {
                 }
             }
         }
-
     }
 
     @Throws(IOException::class)

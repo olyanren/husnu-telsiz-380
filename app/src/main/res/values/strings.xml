@@ -83,4 +83,6 @@
     <string name="complete_mission">Görevi Tamamla</string>
     <string name="complete_mission_question">Görevi tamamlamak istediğinize emin misiniz?</string>
     <string name="mission_is_completed">Görev tamamlandı</string>
+    <string name="request_camera_permission_result">Kamera izni verildi</string>
+    <string name="request_camera_permission_result_error">Kamera izni verilmedi</string>
 </resources>
