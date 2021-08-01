@@ -29,79 +29,86 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    <ImageView
-        android:id="@+id/btn_urgent_notification"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+    <LinearLayout
+        android:id="@+id/btn_group_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:layout_marginTop="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/flash"
-
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-        android:text="@string/btn_previous"
-        android:visibility="gone"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/leftLine"
-        app:layout_constraintEnd_toStartOf="@+id/btn_previous"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
-    <Button
-        android:id="@+id/btn_refresh"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/exit_button"
-        android:drawableStart="@drawable/ic_refresh"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-        android:text="@string/refresh"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/nav_host_fragment"
-        app:layout_constraintEnd_toStartOf="@+id/btn_logout"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        android:showDividers="middle"
+        android:divider="@drawable/empty_tall_divider"
+        android:weightSum="3.6"
+        android:visibility="gone">
+        <Button
+            android:id="@+id/btn_urgent_notification"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="1.1"
+            android:background="@drawable/exit_button"
+            android:drawableStart="@drawable/flash"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:textAllCaps="false"
+            android:text="@string/btn_urgent_notification"
+            android:textColor="@color/white"
 
-    <Button
-        android:id="@+id/btn_previous"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/exit_button"
-        android:drawableStart="@drawable/ic_back"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-        android:text="@string/btn_previous"
-        android:visibility="gone"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/nav_host_fragment"
-        app:layout_constraintEnd_toStartOf="@+id/btn_refresh"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
-    <Button
-        android:id="@+id/btn_logout"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/exit_button"
-        android:drawableStart="@drawable/ic_exit"
-        android:paddingStart="10dp"
-        android:paddingEnd="10dp"
-        android:text="@string/btn_logout"
-        android:visibility="gone"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/nav_host_fragment"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+             />
+
+        <Button
+            android:id="@+id/btn_previous"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="0.8"
+            android:background="@drawable/exit_button"
+            android:drawableStart="@drawable/ic_back"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text="@string/btn_previous"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+
+            />
+        <Button
+            android:id="@+id/btn_refresh"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="0.9"
+            android:background="@drawable/exit_button"
+            android:drawableStart="@drawable/ic_refresh"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text="@string/refresh"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+
+             />
+
+
+
+        <Button
+            android:id="@+id/btn_logout"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="30dp"
+            android:layout_weight="0.8"
+            android:background="@drawable/exit_button"
+            android:drawableStart="@drawable/ic_exit"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:text="@string/btn_logout"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+
+
+            />
+    </LinearLayout>
+
     <View
         android:id="@+id/leftLine"
         android:layout_width="0dp"
@@ -112,7 +119,7 @@
         app:layout_constraintBottom_toTopOf="@+id/nav_host_fragment"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_logout" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_group_main" />
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"

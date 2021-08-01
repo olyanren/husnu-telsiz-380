@@ -70,7 +70,8 @@ class UrgentNotificationFragment : Fragment() {
             TransceiverViewModel::class.java
         )
         view.findViewById<Button>(R.id.btn_save).setOnClickListener {
-            saveExplanation()
+            if (isImageSelected()) saveImage()
+            else saveExplanation()
         }
 
         imgView = view.findViewById(R.id.img_photo)
@@ -83,16 +84,14 @@ class UrgentNotificationFragment : Fragment() {
         return view
     }
 
+    private fun isImageSelected() = this::currentPhotoPath.isInitialized
+
     private fun saveExplanation() {
         btnSave.text = getString(R.string.register_completing)
         btnSave.isEnabled = false
         if (textExplanation.text == null) {
-            Toast.makeText(requireContext(), R.string.message_saved_explanation, Toast.LENGTH_SHORT)
-                .show()
-            btnSave.text = getString(R.string.btn_save)
-            btnSave.isEnabled = true
+            enableSaveButton()
             saveImage()
-            goMainActivity()
             return
         }
         val requestModel = UrgentNotificationAddRequestModel(
@@ -103,14 +102,17 @@ class UrgentNotificationFragment : Fragment() {
             it?.let { resource ->
                 when (resource.status) {
                     Resource.Status.SUCCESS -> {
-                        Toast.makeText(requireContext(),resource.data.toString(),Toast.LENGTH_LONG).show()
-                        saveImage()
+                        Toast.makeText(
+                            requireContext(),
+                            resource.data.toString(),
+                            Toast.LENGTH_LONG
+                        ).show()
+                        goMainActivity()
                     }
                     Resource.Status.API_ERROR -> {
                         Toast.makeText(requireContext(), resource.message, Toast.LENGTH_SHORT)
                             .show()
-                        btnSave.text = getString(R.string.btn_save)
-                        btnSave.isEnabled = true
+                        enableSaveButton()
                     }
                     Resource.Status.ERROR -> {
                         Toast.makeText(
@@ -118,8 +120,7 @@ class UrgentNotificationFragment : Fragment() {
                             getString(R.string.unhandled_error),
                             Toast.LENGTH_SHORT
                         ).show()
-                        btnSave.text = getString(R.string.btn_save)
-                        btnSave.isEnabled = true
+                        enableSaveButton()
                     }
                     Resource.Status.LOADING -> {
                         // loadingProgressBar.visibility = View.VISIBLE
@@ -129,36 +130,38 @@ class UrgentNotificationFragment : Fragment() {
         })
     }
 
+    private fun enableSaveButton() {
+        btnSave.text = getString(R.string.btn_save)
+        btnSave.isEnabled = true
+    }
+
     private fun goMainActivity() {
         activity?.finish()
     }
 
     private fun saveImage() {
-        if (!this::currentPhotoPath.isInitialized) {
-            btnSave.text = getString(R.string.btn_save)
-            goMainActivity()
-            return
-        }
-        transceiverViewModel.uploadUrgentNotificationPhoto(textExplanation.text.toString(),currentPhotoPath)
-            .observe(requireActivity(), {
+        transceiverViewModel.uploadUrgentNotificationPhoto(
+            if (textExplanation.text == null) "" else textExplanation.text.toString(),
+            currentPhotoPath).observe(requireActivity(), {
                 it?.let { resource ->
                     when (resource.status) {
                         Resource.Status.SUCCESS -> {
-                            Toast.makeText(
-                                requireContext(),
-                                resource.data?.message,
+                            Toast.makeText(requireContext(), resource.data?.message,
                                 Toast.LENGTH_SHORT
                             ).show()
-
                             goMainActivity()
                         }
+                        Resource.Status.API_ERROR -> {
+                            Toast.makeText(requireContext(), resource.message, Toast.LENGTH_SHORT)
+                                .show()
+                            enableSaveButton()
+                        }
                         Resource.Status.ERROR -> {
-                            Toast.makeText(
-                                requireContext(),
+                            Toast.makeText(requireContext(),
                                 "Resim yüklenirken hata oluştu.",
                                 Toast.LENGTH_SHORT
                             ).show()
-
+                            enableSaveButton()
                         }
                         Resource.Status.LOADING -> {
                             // loadingProgressBar.visibility = View.VISIBLE
@@ -167,7 +170,6 @@ class UrgentNotificationFragment : Fragment() {
                 }
             })
     }
-
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

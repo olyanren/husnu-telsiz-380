@@ -64,11 +64,11 @@
     <string name="no">Hayır</string>
     <string name="remember_me">Beni Hatırla</string>
     <string name="btn_read_nfc">NFC Tara</string>
-    <string name="btn_logout">Çıkış Yap</string>
+    <string name="btn_logout">Çıkış</string>
     <string name="refresh">Yenile</string>
     <string name="demo_text_name">Yer Bilgisi</string>
-    <string name="btn_urgent_notification">Özel Durum Bildirimi</string>
-    <string name="btn_previous">Önceki Görev</string>
+    <string name="btn_urgent_notification">Özel Durum</string>
+    <string name="btn_previous">Önceki</string>
     <string name="btn_write_nfc">NFC Yaz</string>
     <string name="register_completing">Kayıt Tamamlanıyor</string>
     <string name="unhandled_error">Beklenmeyen bir hata oluştu</string>

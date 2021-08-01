@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -15,13 +16,15 @@ import com.dengetelekom.telsiz.ui.UrgentNotificationActivity
 
 class MainActivity : AppCompatActivity() {
     private lateinit var textCompanyName: TextView
+    private lateinit var btnGroupMain: LinearLayout
     private lateinit var btnRefresh: Button
     private lateinit var btnPreviousRecord: Button
-    private lateinit var btnUrgentNotification: ImageView
+    private lateinit var btnUrgentNotification: Button
     private lateinit var btnLogout: Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        btnGroupMain = findViewById(R.id.btn_group_main)
         btnRefresh = findViewById(R.id.btn_refresh)
         btnPreviousRecord = findViewById(R.id.btn_previous)
         btnUrgentNotification = findViewById(R.id.btn_urgent_notification)
@@ -35,12 +38,10 @@ class MainActivity : AppCompatActivity() {
                     when (loginFormState) {
                         null -> return@Observer
                         "VISIBLE" -> {
-                            btnRefresh.visibility = View.VISIBLE; btnPreviousRecord.visibility = View.VISIBLE;btnLogout.visibility=View.VISIBLE
-                            btnUrgentNotification.visibility=View.VISIBLE
+                            btnGroupMain.visibility = View.VISIBLE;
                         }
                         "GONE" -> {
-                            btnRefresh.visibility = View.GONE; btnPreviousRecord.visibility = View.GONE;btnLogout.visibility=View.GONE
-                            btnUrgentNotification.visibility=View.GONE
+                            btnGroupMain.visibility = View.GONE;
                         }
                     }
                 })
