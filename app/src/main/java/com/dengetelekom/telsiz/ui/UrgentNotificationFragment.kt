@@ -89,8 +89,7 @@ class UrgentNotificationFragment : Fragment() {
     private fun isImageSelected() = this::currentPhotoPath.isInitialized
 
     private fun saveExplanation() {
-        btnSave.text = getString(R.string.register_completing)
-        btnSave.isEnabled = false
+        disableSaveButton()
         if (textExplanation.text == null) {
             enableSaveButton()
             saveImage()
@@ -136,12 +135,16 @@ class UrgentNotificationFragment : Fragment() {
         btnSave.text = getString(R.string.btn_save)
         btnSave.isEnabled = true
     }
-
+    private fun disableSaveButton() {
+        btnSave.text = getString(R.string.register_completing)
+        btnSave.isEnabled = false
+    }
     private fun goMainActivity() {
         activity?.finish()
     }
 
     private fun saveImage() {
+        disableSaveButton()
         transceiverViewModel.uploadUrgentNotificationPhoto(
             if (textExplanation.text == null) "" else textExplanation.text.toString(),
             currentPhotoPath).observe(requireActivity(), {

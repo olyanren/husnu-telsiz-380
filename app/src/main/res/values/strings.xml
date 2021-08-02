@@ -64,7 +64,7 @@
     <string name="no">Hayır</string>
     <string name="remember_me">Beni Hatırla</string>
     <string name="btn_read_nfc">NFC Tara</string>
-    <string name="btn_logout">Çıkış</string>
+    <string name="btn_logout"></string>
     <string name="refresh">Yenile</string>
     <string name="demo_text_name">Yer Bilgisi</string>
     <string name="btn_urgent_notification">Özel Durum</string>
