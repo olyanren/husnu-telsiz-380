@@ -64,6 +64,9 @@
             android:name=".ReadBarcodeActivity"
             android:theme="@style/AppThemeForBarcodeRead" />
         <activity
+            android:name=".ImageCaptureActivity"
+            android:theme="@style/AppThemeForBarcodeRead" />
+        <activity
             android:name=".ReadNcfActivity"
             android:theme="@style/AppThemeForBarcodeRead"></activity>
     </application>

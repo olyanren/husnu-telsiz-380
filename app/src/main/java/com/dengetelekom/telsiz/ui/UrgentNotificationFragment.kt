@@ -17,7 +17,9 @@ import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.dengetelekom.telsiz.ImageCaptureActivity
 import com.dengetelekom.telsiz.R
+import com.dengetelekom.telsiz.ReadBarcodeActivity
 import com.dengetelekom.telsiz.TransceiverViewModel
 import com.dengetelekom.telsiz.factories.TransceiverViewModelFactory
 import com.dengetelekom.telsiz.models.*
@@ -174,6 +176,7 @@ class UrgentNotificationFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            currentPhotoPath=  data?.getStringExtra("result").toString()
             imgView.setImageURI(Uri.parse(currentPhotoPath))
         }
     }
@@ -196,50 +199,21 @@ class UrgentNotificationFragment : Fragment() {
     private fun dispatchTakePictureIntent() {
         if (checkSelfPermission(requireContext(),Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(arrayOf(Manifest.permission.CAMERA), MY_CAMERA_REQUEST_CODE);
+        }else{
+            openCameraForImage();
         }
 
 
     }
 
     private fun openCameraForImage() {
-        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-
-          takePictureIntent.resolveActivity(requireContext().packageManager)?.also {
-
-                // Create the File where the photo should go
-                val photoFile: File? = try {
-                    createImageFile()
-                } catch (ex: IOException) {
-                    Toast.makeText(requireContext(),ex.message,Toast.LENGTH_LONG).show();
-                    ex.message?.let { it1 -> Log.e("DENGE_TELSIZ_TAKE_PHOTO", it1) }
-                    null
-                }
-                // Continue only if the File was successfully created
-                photoFile?.also {
-                    val photoURI: Uri = FileProvider.getUriForFile(
-                        requireContext(), context?.packageName + ".fileprovider", it
-                    )
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-                }
-           }
-        }
+        startActivityForResult(
+            Intent(activity, ImageCaptureActivity::class.java),
+            REQUEST_IMAGE_CAPTURE
+        )
     }
 
-    @Throws(IOException::class)
-    private fun createImageFile(): File {
 
-        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
-        val storageDir: File? = context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        return File.createTempFile(
-            "JPEG_${timeStamp}_", /* prefix */
-            ".jpg", /* suffix */
-            storageDir /* directory */
-        ).apply {
-            // Save a file: path for use with ACTION_VIEW intents
-            currentPhotoPath = absolutePath
-        }
-    }
 
 
 }

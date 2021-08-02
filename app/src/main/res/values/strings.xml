@@ -85,4 +85,5 @@
     <string name="mission_is_completed">Görev tamamlandı</string>
     <string name="request_camera_permission_result">Kamera izni verildi</string>
     <string name="request_camera_permission_result_error">Kamera izni verilmedi</string>
+    <string name="btn_capture_image">Fotoğrafı Kaydet</string>
 </resources>
