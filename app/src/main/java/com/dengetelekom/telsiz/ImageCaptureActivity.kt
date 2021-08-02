@@ -195,8 +195,8 @@ class ImageCaptureActivity : AppCompatActivity() {
 
         val cameraExecutor = Executors.newSingleThreadExecutor()
 
-        analysisUseCase?.setAnalyzer(cameraExecutor, ImageAnalysis.Analyzer { imageProxy ->
-            processImageProxy(BarcodeScanning.getClient(), imageProxy)
+        analysisUseCase?.setAnalyzer(cameraExecutor, { imageProxy ->
+            processImageProxy( imageProxy)
         })
 
         try {
@@ -209,9 +209,8 @@ class ImageCaptureActivity : AppCompatActivity() {
     }
 
     @SuppressLint("UnsafeExperimentalUsageError")
-    private fun processImageProxy(barcodeScanner: BarcodeScanner, imageProxy: ImageProxy) {
-        val inputImage =
-            InputImage.fromMediaImage(imageProxy.image!!, imageProxy.imageInfo.rotationDegrees)
+    private fun processImageProxy( imageProxy: ImageProxy) {
+
 
         selectedBitmap = imageProxy.image!!
 
