@@ -68,7 +68,7 @@ class ImageCaptureActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_image_capture)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = getString(R.string.barcode_read_from_camera)
+        supportActionBar?.title = getString(R.string.image_capture_title)
         val upArrow = ContextCompat.getDrawable(this, R.drawable.back_button_image)
 
         supportActionBar?.setHomeAsUpIndicator(upArrow)

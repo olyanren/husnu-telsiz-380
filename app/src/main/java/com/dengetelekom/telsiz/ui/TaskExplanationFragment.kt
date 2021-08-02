@@ -14,11 +14,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.checkSelfPermission
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import com.dengetelekom.telsiz.ImageCaptureActivity
 import com.dengetelekom.telsiz.R
 import com.dengetelekom.telsiz.TransceiverViewModel
 import com.dengetelekom.telsiz.factories.TransceiverViewModelFactory
@@ -41,6 +43,7 @@ private const val REQUEST_IMAGE_CAPTURE = 1
 private const val THUMBNAIL_SIZE = 50
 
 private val MY_CAMERA_REQUEST_CODE = 100
+
 /**
  * A simple [Fragment] subclass.
  * Use the [TaskDetailFragment.newInstance] factory method to
@@ -92,14 +95,22 @@ class TaskExplanationFragment : Fragment() {
         return view
     }
 
-    private fun saveExplanation() {
+    private fun enableSaveButton() {
+        btnSave.text = getString(R.string.btn_save)
+        btnSave.isEnabled = true
+    }
+
+    private fun disableSaveButton() {
         btnSave.text = getString(R.string.register_completing)
         btnSave.isEnabled = false
-        if (textExplanation.text == null || spinnerTitles.selectedItem==null) {
+    }
+
+    private fun saveExplanation() {
+        disableSaveButton()
+        if (textExplanation.text == null || spinnerTitles.selectedItem == null) {
             Toast.makeText(requireContext(), R.string.message_saved_explanation, Toast.LENGTH_SHORT)
                 .show()
-            btnSave.text = getString(R.string.btn_save)
-            btnSave.isEnabled = true
+            enableSaveButton()
             saveImage()
             goDetail()
             return
@@ -120,8 +131,7 @@ class TaskExplanationFragment : Fragment() {
                     Resource.Status.API_ERROR -> {
                         Toast.makeText(requireContext(), resource.message, Toast.LENGTH_SHORT)
                             .show()
-                        btnSave.text = getString(R.string.btn_save)
-                        btnSave.isEnabled = true
+                        enableSaveButton()
                     }
                     Resource.Status.ERROR -> {
                         Toast.makeText(
@@ -129,8 +139,7 @@ class TaskExplanationFragment : Fragment() {
                             getString(R.string.unhandled_error),
                             Toast.LENGTH_SHORT
                         ).show()
-                        btnSave.text = getString(R.string.btn_save)
-                        btnSave.isEnabled = true
+                        enableSaveButton()
                     }
                     Resource.Status.LOADING -> {
                         // loadingProgressBar.visibility = View.VISIBLE
@@ -139,6 +148,7 @@ class TaskExplanationFragment : Fragment() {
             }
         })
     }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String?>,
@@ -147,50 +157,48 @@ class TaskExplanationFragment : Fragment() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == MY_CAMERA_REQUEST_CODE) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(requireContext(), getString(R.string.request_camera_permission_result), Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.request_camera_permission_result),
+                    Toast.LENGTH_LONG
+                ).show()
                 openCameraForImage()
             } else {
-                Toast.makeText(requireContext(), getString(R.string.request_camera_permission_result_error), Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    requireContext(),
+                    getString(R.string.request_camera_permission_result_error),
+                    Toast.LENGTH_LONG
+                ).show()
             }
         }
     }
+
     private fun dispatchTakePictureIntent() {
-        if (ContextCompat.checkSelfPermission(
+        if (checkSelfPermission(
                 requireContext(),
                 Manifest.permission.CAMERA
-            ) != PackageManager.PERMISSION_GRANTED) {
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
             requestPermissions(arrayOf(Manifest.permission.CAMERA), MY_CAMERA_REQUEST_CODE);
+        } else {
+            openCameraForImage();
         }
     }
-    private fun openCameraForImage(){
-        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
 
-            takePictureIntent.resolveActivity(requireContext().packageManager)?.also {
-                // Create the File where the photo should go
-                val photoFile: File? = try {
-                    createImageFile()
-                } catch (ex: IOException) {
-                    ex.message?.let { it1 -> Log.e("DENGE_TELSIZ_TAKE_PHOTO", it1) }
-                    null
-                }
-                // Continue only if the File was successfully created
-                photoFile?.also {
-                    val photoURI: Uri = FileProvider.getUriForFile(
-                        requireContext(), context?.packageName + ".fileprovider", it
-                    )
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-                }
-            }
-        }
+    private fun openCameraForImage() {
+        startActivityForResult(
+            Intent(activity, ImageCaptureActivity::class.java),
+            REQUEST_IMAGE_CAPTURE
+        )
     }
+
     private fun saveImage() {
         if (!this::currentPhotoPath.isInitialized) {
             btnSave.text = getString(R.string.btn_save)
             goDetail()
             return
         }
-        transceiverViewModel.uploadPhoto(taskModel.id,taskModel.locationId, currentPhotoPath)
+        transceiverViewModel.uploadPhoto(taskModel.id, taskModel.locationId, currentPhotoPath)
             .observe(requireActivity(), {
                 it?.let { resource ->
                     when (resource.status) {
@@ -221,8 +229,8 @@ class TaskExplanationFragment : Fragment() {
 
 
     private fun goDetail() {
-        taskModel.isTodoAdded=true
-        SharedPreferencesUtil.writeTask(requireContext(),taskModel )
+        taskModel.isTodoAdded = true
+        SharedPreferencesUtil.writeTask(requireContext(), taskModel)
         val action =
             TaskExplanationFragmentDirections.actionTaskExplanationFragmentToTaskDetailFragment()
         view?.findNavController()?.navigate(action)
@@ -265,27 +273,9 @@ class TaskExplanationFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            currentPhotoPath = data?.getStringExtra("result").toString()
             imgView.setImageURI(Uri.parse(currentPhotoPath))
         }
     }
-
-
-
-
-    @Throws(IOException::class)
-    private fun createImageFile(): File {
-        // Create an image file name
-        val timeStamp: String = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
-        val storageDir: File? = context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        return File.createTempFile(
-            "JPEG_${timeStamp}_", /* prefix */
-            ".jpg", /* suffix */
-            storageDir /* directory */
-        ).apply {
-            // Save a file: path for use with ACTION_VIEW intents
-            currentPhotoPath = absolutePath
-        }
-    }
-
 
 }
