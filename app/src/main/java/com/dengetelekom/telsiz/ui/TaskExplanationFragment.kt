@@ -214,7 +214,7 @@ class TaskExplanationFragment : Fragment() {
                         Resource.Status.ERROR -> {
                             Toast.makeText(
                                 requireContext(),
-                                "Resim yüklenirken hata oluştu.",
+                                resource.message,
                                 Toast.LENGTH_SHORT
                             ).show()
 
