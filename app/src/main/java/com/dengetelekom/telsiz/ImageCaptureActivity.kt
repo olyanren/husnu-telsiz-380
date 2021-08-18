@@ -1,48 +1,48 @@
 package com.dengetelekom.telsiz
 
 import android.Manifest
-
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.util.DisplayMetrics
 import android.util.Log
-import android.util.Size
 import android.view.MenuItem
 import android.view.Surface
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import androidx.camera.camera2.internal.annotation.CameraExecutor
 import androidx.camera.core.*
-import androidx.camera.core.ImageCapture.CAPTURE_MODE_MAXIMIZE_QUALITY
-import androidx.camera.core.ImageCapture.FLASH_MODE_AUTO
-import androidx.camera.core.impl.CameraCaptureMetaData
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.google.mlkit.vision.barcode.Barcode
-import com.google.mlkit.vision.barcode.BarcodeScanner
-import com.google.mlkit.vision.barcode.BarcodeScannerOptions
-import com.google.mlkit.vision.barcode.BarcodeScanning
-import com.google.mlkit.vision.common.InputImage
+
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import java.nio.file.Files.createFile
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.Executor
+import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
+import com.google.android.play.core.splitinstall.c
 
-import android.media.Image
-import java.io.ByteArrayOutputStream
-import java.nio.ByteBuffer
+import android.provider.MediaStore
+
+
+
 
 
 class ImageCaptureActivity : AppCompatActivity() {
@@ -56,7 +56,9 @@ class ImageCaptureActivity : AppCompatActivity() {
     private var previewUseCase: Preview? = null
     private var analysisUseCase: ImageAnalysis? = null
     private lateinit var currentPhotoPath: String
-    private var selectedBitmap: Image? = null
+    private var selectedBitmap: Bitmap? = null
+    private var imageCapture: ImageCapture? = null
+    private var cameraExecutor: Executor? = null
     private val screenAspectRatio: Int
         get() {
             // Get screen metrics used to setup camera for full screen resolution
@@ -100,8 +102,8 @@ class ImageCaptureActivity : AppCompatActivity() {
             try {
                 if (selectedBitmap != null) {
                     FileOutputStream(currentPhotoPath).use { out ->
-                        toBitmap(selectedBitmap!!)?.compress(
-                            Bitmap.CompressFormat.PNG,
+                        selectedBitmap!!.compress(
+                            Bitmap.CompressFormat.JPEG,
                             100,
                             out
                         ) // bmp is your Bitmap instance
@@ -164,7 +166,7 @@ class ImageCaptureActivity : AppCompatActivity() {
 
         previewUseCase = Preview.Builder()
             .setTargetAspectRatio(screenAspectRatio)
-            .setTargetRotation(Surface.ROTATION_90)
+            .setTargetRotation(Surface.ROTATION_0)
             .build()
         previewUseCase!!.setSurfaceProvider(previewView!!.surfaceProvider)
 
@@ -181,9 +183,7 @@ class ImageCaptureActivity : AppCompatActivity() {
     }
 
     private fun bindAnalyseUseCase() {
-        // Note that if you know which format of barcode your app is dealing with, detection will be
-        // faster to specify the supported barcode formats one by one, e.g.
-        BarcodeScannerOptions.Builder().setBarcodeFormats(Barcode.FORMAT_UNKNOWN).build()
+
 
         if (cameraProvider == null) return
         if (analysisUseCase != null) cameraProvider!!.unbind(analysisUseCase)
@@ -192,15 +192,26 @@ class ImageCaptureActivity : AppCompatActivity() {
             .setTargetAspectRatio(screenAspectRatio)
             .setTargetRotation(Surface.ROTATION_0)
             .build()
+        imageCapture = ImageCapture.Builder()
+            .setCaptureMode(ImageCapture.CAPTURE_MODE_MAXIMIZE_QUALITY)
+            // We request aspect ratio but no resolution to match preview config, but letting
+            // CameraX optimize for whatever specific resolution best fits our use cases
+            .setTargetAspectRatio(screenAspectRatio)
+            // Set initial target rotation, we will have to call this again if rotation changes
+            // during the lifecycle of this use case
+            .setTargetRotation(Surface.ROTATION_0)
+            .build()
+        cameraExecutor = Executors.newSingleThreadExecutor()
 
-        val cameraExecutor = Executors.newSingleThreadExecutor()
-
-        analysisUseCase?.setAnalyzer(cameraExecutor, { imageProxy ->
-            processImageProxy( imageProxy)
+        analysisUseCase?.setAnalyzer(cameraExecutor!!, { imageProxy ->
+            processImageProxy(imageProxy)
         })
 
         try {
-            cameraProvider!!.bindToLifecycle(this, cameraSelector!!, analysisUseCase)
+            cameraProvider!!.bindToLifecycle(
+                this, cameraSelector!!, previewUseCase, imageCapture,analysisUseCase
+            )
+
         } catch (illegalStateException: IllegalStateException) {
             Log.e(TAG, illegalStateException.message!!)
         } catch (illegalArgumentException: IllegalArgumentException) {
@@ -209,32 +220,40 @@ class ImageCaptureActivity : AppCompatActivity() {
     }
 
     @SuppressLint("UnsafeExperimentalUsageError")
-    private fun processImageProxy( imageProxy: ImageProxy) {
+    private fun processImageProxy(imageProxy: ImageProxy) {
+        val photoFile = createImageFile()
 
+        val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
 
-        selectedBitmap = imageProxy.image!!
+        imageCapture!!.takePicture(
+            outputOptions,
+            cameraExecutor!!,
+            object : ImageCapture.OnImageSavedCallback {
+                override fun onError(exc: ImageCaptureException) {
+                    Log.e("IMAGE_CAPTURE",exc.message!!)
+                }
 
+                override fun onImageSaved(output: ImageCapture.OutputFileResults) {
+                    var path= (output.savedUri ?: Uri.fromFile(photoFile))
+                    selectedBitmap = when {
+                        Build.VERSION.SDK_INT < Build.VERSION_CODES.P -> MediaStore.Images.Media.getBitmap(
+                            contentResolver,
+                            path
+                        )
+                        else -> {
+                            val source = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                                ImageDecoder.createSource( contentResolver, path)
+                            } else {
+                                TODO("VERSION.SDK_INT < P")
+                            }
+                            ImageDecoder.decodeBitmap(source)
+                        }
+                    }
 
+                }
+            })
     }
-    private fun toBitmap(image: Image): Bitmap? {
-        val planes: Array<Image.Plane> = image.planes
-        val yBuffer: ByteBuffer = planes[0].buffer
-        val uBuffer: ByteBuffer = planes[1].buffer
-        val vBuffer: ByteBuffer = planes[2].buffer
-        val ySize: Int = yBuffer.remaining()
-        val uSize: Int = uBuffer.remaining()
-        val vSize: Int = vBuffer.remaining()
-        val nv21 = ByteArray(ySize + uSize + vSize)
-        //U and V are swapped
-        yBuffer.get(nv21, 0, ySize)
-        vBuffer.get(nv21, ySize, vSize)
-        uBuffer.get(nv21, ySize + vSize, uSize)
-        val yuvImage = YuvImage(nv21, ImageFormat.NV21, image.getWidth(), image.getHeight(), null)
-        val out = ByteArrayOutputStream()
-        yuvImage.compressToJpeg(Rect(0, 0, yuvImage.width, yuvImage.height), 75, out)
-        val imageBytes: ByteArray = out.toByteArray()
-        return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
-    }
+
 
     /**
      *  [androidx.camera.core.ImageAnalysis],[androidx.camera.core.Preview] requires enum value of
