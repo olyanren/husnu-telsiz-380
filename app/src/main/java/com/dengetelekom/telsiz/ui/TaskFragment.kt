@@ -64,6 +64,7 @@ class TaskFragment : Fragment(), TaskRecyclerViewAdapter.OnItemClickListener {
                             //loadingProgressBar.visibility = View.GONE
                             @Suppress("UNCHECKED_CAST")
                             setCompanyName((resource.data as List<TaskModel>?))
+                            setCheckinAvailable(resource.data)
                             setNFCBarcodeStatus(resource.data)
                             adapter = resource.data?.let { it1 ->
                                 TaskRecyclerViewAdapter(
@@ -94,6 +95,14 @@ class TaskFragment : Fragment(), TaskRecyclerViewAdapter.OnItemClickListener {
 
         }
     }
+
+    private fun setCheckinAvailable(data: List<TaskModel>?) {
+        if (data?.size != null && data.isNotEmpty()) {
+            transceiverViewModel.setCheckinAvailable(data[0].isCheckinAvailable)
+
+        }
+    }
+
     private fun setNFCBarcodeStatus(data: List<TaskModel>?) {
         if (data?.size != null && data.isNotEmpty()) {
             Constants.NFC_READER_ACTIVE = data[0].nfcReaderActive == "1"||data[0].nfcReaderActive == "true"

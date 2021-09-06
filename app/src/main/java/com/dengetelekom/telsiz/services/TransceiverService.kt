@@ -48,4 +48,10 @@ interface TransceiverService {
     suspend fun uploadUrgentNotificationPhoto(
                             @Part("explanation") explanation: RequestBody?,
                             @Part file: MultipartBody.Part?): ApiResponseModel
+
+    @POST("checkin")
+    suspend fun checkin(@Body  nfc: NfcObject): ApiResponseModel
+
+    @POST("checkout")
+    suspend fun checkout(@Body  nfc: NfcObject): ApiResponseModel
 }

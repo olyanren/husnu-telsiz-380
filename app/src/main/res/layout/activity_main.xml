@@ -29,25 +29,27 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
     <LinearLayout
         android:id="@+id/btn_group_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginTop="15dp"
         android:layout_marginBottom="8dp"
+        android:divider="@drawable/empty_tall_divider"
+        android:orientation="horizontal"
+        android:showDividers="middle"
+
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/nav_host_fragment"
         app:layout_constraintTop_toBottomOf="@+id/imageView"
-        android:showDividers="middle"
-        android:divider="@drawable/empty_tall_divider"
+        tools:layout_editor_absoluteX="8dp">
 
-        android:visibility="gone">
         <View
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_weight="1" />
+
         <Button
             android:id="@+id/btn_urgent_notification"
             android:layout_width="wrap_content"
@@ -57,12 +59,12 @@
             android:drawableStart="@drawable/flash"
             android:paddingStart="10dp"
             android:paddingEnd="10dp"
-            android:textAllCaps="false"
             android:text="@string/btn_urgent_notification"
+            android:textAllCaps="false"
             android:textColor="@color/white"
 
 
-             />
+            />
 
         <Button
             android:id="@+id/btn_previous"
@@ -78,6 +80,7 @@
             android:textColor="@color/white"
 
             />
+
         <Button
             android:id="@+id/btn_refresh"
             android:layout_width="wrap_content"
@@ -91,8 +94,7 @@
             android:textAllCaps="false"
             android:textColor="@color/white"
 
-             />
-
+            />
 
 
         <Button
@@ -140,7 +142,43 @@
         app:layout_constraintTop_toBottomOf="@+id/leftLine"
         app:navGraph="@navigation/nav_graph" />
 
+    <Button
+        android:id="@+id/btn_checkin"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="96dp"
 
+        android:layout_marginBottom="4dp"
+        android:background="@drawable/exit_button"
+        android:paddingStart="10dp"
+        android:visibility="gone"
+        android:paddingEnd="10dp"
+        android:text="@string/checkin"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/btn_group_main"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_company_name" />
+
+    <Button
+        android:id="@+id/btn_checkout"
+        android:layout_width="wrap_content"
+
+        android:layout_height="30dp"
+        android:visibility="gone"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="4dp"
+        android:background="@drawable/exit_button"
+        android:paddingStart="10dp"
+        android:paddingEnd="10dp"
+        android:text="@string/checkout"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.965"
+        app:layout_constraintStart_toEndOf="@+id/btn_checkin"
+        app:layout_constraintTop_toBottomOf="@+id/text_company_name" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

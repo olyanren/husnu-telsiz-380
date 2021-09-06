@@ -34,6 +34,14 @@ class TransceiverProvider {
         val service = getApiClient().create(TransceiverService::class.java)
         return service.previousTask()
     }
+    suspend fun checkin(nfc:NfcObject): ApiResponseModel {
+        val service = getApiClient().create(TransceiverService::class.java)
+        return service.checkin(nfc)
+    }
+    suspend fun checkout(nfc:NfcObject): ApiResponseModel {
+        val service = getApiClient().create(TransceiverService::class.java)
+        return service.checkout(nfc)
+    }
     suspend fun explanationTitles(): ExplanationTitleResponseModel {
         val service = getApiClient().create(TransceiverService::class.java)
         return service.explanationTitles()

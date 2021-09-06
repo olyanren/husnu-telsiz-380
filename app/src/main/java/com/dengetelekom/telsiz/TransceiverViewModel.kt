@@ -17,10 +17,12 @@ class TransceiverViewModel(private val repository: TransceiverRepository) : View
     private val _refreshData = MutableLiveData<String>()
     private val _previousData = MutableLiveData<String>()
     private val _companyNameData = MutableLiveData<String>()
+    private val _isCheckinAvailable = MutableLiveData<Boolean>()
     val loginFormState: LiveData<LoginFormState> = _loginForm
     val refreshState: LiveData<String> = _refreshData
     val previousState: LiveData<String> = _previousData
     val companyNameState: LiveData<String> = _companyNameData
+    val isCheckinAvailableState: LiveData<Boolean> = _isCheckinAvailable
     private val TAG = "TransceiverViewModel"
     fun loginDataChanged(username: String, password: String) {
         if (!isUserNameValid(username)) {
@@ -35,6 +37,7 @@ class TransceiverViewModel(private val repository: TransceiverRepository) : View
     fun refresh() { _refreshData.value = "REFRESHED" }
     fun previousRecord() { _previousData.value = "PREVIOUS" }
 
+
     fun showRefreshButton() {
         _refreshData.value = "VISIBLE"
     }
@@ -46,7 +49,9 @@ class TransceiverViewModel(private val repository: TransceiverRepository) : View
     fun setCompanyName(value: String) {
         _companyNameData.value = value
     }
-
+    fun setCheckinAvailable(value: Boolean) {
+        _isCheckinAvailable.value = value
+    }
     private fun isUserNameValid(username: String): Boolean {
         return if (username.contains("@")) {
             Patterns.EMAIL_ADDRESS.matcher(username).matches()
@@ -102,6 +107,32 @@ class TransceiverViewModel(private val repository: TransceiverRepository) : View
         emit(Resource.loading(data = null))
         try {
             emit(Resource.success(data = repository.previousTask()))
+        } catch (exception: Exception) {
+            emit(
+                Resource.error(
+                    data = null, message = exception.message
+                        ?: "Beklenmeyen bir hata oluştu"
+                )
+            )
+        }
+    }
+    fun checkin(nfc:NfcObject) = liveData {
+        emit(Resource.loading(data = null))
+        try {
+            emit(Resource.success(data = repository.checkin(nfc)))
+        } catch (exception: Exception) {
+            emit(
+                Resource.error(
+                    data = null, message = exception.message
+                        ?: "Beklenmeyen bir hata oluştu"
+                )
+            )
+        }
+    }
+    fun checkout(nfc:NfcObject) = liveData {
+        emit(Resource.loading(data = null))
+        try {
+            emit(Resource.success(data = repository.checkout(nfc)))
         } catch (exception: Exception) {
             emit(
                 Resource.error(

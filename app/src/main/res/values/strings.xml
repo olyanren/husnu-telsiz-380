@@ -31,7 +31,7 @@
     <string name="invalid_username">Geçerli bir kullanıcı adı giriniz</string>
     <string name="invalid_password">Şifrenizi giriniz</string>
     <string name="login_failed">"Login failed"</string>
-    <string name="company_name"></string>
+    <string name="company_name">DEMO</string>
     <string name="text_demo">Demo</string>
     <string name="text_date">10/01/2021</string>
     <string name="demo_text_task_title">1. Tur - 22:00</string>
@@ -64,7 +64,7 @@
     <string name="no">Hayır</string>
     <string name="remember_me">Beni Hatırla</string>
     <string name="btn_read_nfc">NFC Tara</string>
-    <string name="btn_logout"></string>
+    <string name="btn_logout">Çıkış</string>
     <string name="refresh">Yenile</string>
     <string name="demo_text_name">Yer Bilgisi</string>
     <string name="btn_urgent_notification">Özel Durum</string>
@@ -87,4 +87,7 @@
     <string name="request_camera_permission_result_error">Kamera izni verilmedi</string>
     <string name="btn_capture_image">Fotoğrafı Kaydet</string>
     <string name="image_capture_title">Foto Çek</string>
+    <string name="checkout">Çıkış Oku</string>
+    <string name="checkin">Giriş Oku</string>
+    <string name="loading">İşlem sürüyor</string>
 </resources>

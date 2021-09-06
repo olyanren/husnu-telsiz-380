@@ -10,6 +10,8 @@ class TransceiverRepository : BaseRepository {
     suspend fun token(request: TokenRequestModel) = provider.token(request)
     suspend fun tasks() = provider.tasks()
     suspend fun previousTask() = provider.previousTask()
+    suspend fun checkin(nfc:NfcObject) = provider.checkin(nfc)
+    suspend fun checkout(nfc:NfcObject) = provider.checkout(nfc)
     suspend fun explanationTitles() = provider.explanationTitles()
     suspend fun todos() = provider.todos()
     suspend fun addExplanation(request: ExplanationAddRequestModel) = provider.addExplanation(request)
