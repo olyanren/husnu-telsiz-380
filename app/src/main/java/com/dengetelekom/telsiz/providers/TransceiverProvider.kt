@@ -30,6 +30,14 @@ class TransceiverProvider {
         val service = getApiClient().create(TransceiverService::class.java)
         return service.tasks()
     }
+    suspend fun notifications(): NetworkResponse<NotificationResponseModel, RetrofitError> {
+        val service = getApiClient().create(TransceiverService::class.java)
+        return service.notifications()
+    }
+    suspend fun previousNotification(): NotificationResponseModel {
+        val service = getApiClient().create(TransceiverService::class.java)
+        return service.previousNotification()
+    }
     suspend fun previousTask(): TaskResponseModel {
         val service = getApiClient().create(TransceiverService::class.java)
         return service.previousTask()

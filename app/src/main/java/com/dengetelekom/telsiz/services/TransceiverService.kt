@@ -17,9 +17,14 @@ interface TransceiverService {
 
     @GET("tasks")
     suspend fun tasks(): NetworkResponse<TaskResponseModel, RetrofitError>
-
     @GET("tasks/previous")
     suspend fun previousTask(): TaskResponseModel
+
+    @GET("notifications")
+    suspend fun notifications(): NetworkResponse<NotificationResponseModel, RetrofitError>
+    @GET("notifications/previous")
+    suspend fun previousNotification(): NotificationResponseModel
+
 
     @GET("explanation-titles")
     suspend fun explanationTitles(): ExplanationTitleResponseModel

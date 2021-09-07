@@ -96,6 +96,38 @@ class TransceiverViewModel(private val repository: TransceiverRepository) : View
             )
         }
     }
+    fun notifications() = liveData {
+        emit(Resource.loading(data = null))
+        try {
+            when (val resp=repository.notifications()) {
+                is NetworkResponse.Success -> emit(Resource.success(data = resp.body.data))
+                is NetworkResponse.ApiError -> emit(resp.body.message.let { Resource.error(message = it,data = resp.body) })
+                is NetworkResponse.NetworkError -> throw java.lang.Exception()
+                is NetworkResponse.UnknownError -> throw java.lang.Exception()
+            }
+
+        } catch (exception: Exception) {
+            emit(
+                Resource.error(
+                    data = null, message = exception.message
+                        ?: "Beklenmeyen bir hata oluştu"
+                )
+            )
+        }
+    }
+    fun previousNotification() = liveData {
+        emit(Resource.loading(data = null))
+        try {
+            emit(Resource.success(data = repository.previousNotification()))
+        } catch (exception: Exception) {
+            emit(
+                Resource.error(
+                    data = null, message = exception.message
+                        ?: "Beklenmeyen bir hata oluştu"
+                )
+            )
+        }
+    }
     fun previousTask() = liveData {
         emit(Resource.loading(data = null))
         try {
