@@ -166,6 +166,10 @@ class LoginFragment : Fragment() {
     private fun updateUiWithUser(value: Resource<TokenResponseModel>?) {
         val welcome = getString(R.string.welcome)
         Constants.ACCESS_TOKEN = value?.data?.access_token ?: ""
+        Constants.COMPANY_NAME = value?.data?.companyName ?: ""
+        Constants.NFC_READER_ACTIVE = value?.data?.nfcReaderActive == true
+        Constants.BARCODE_READER_ACTIVE = value?.data?.barcodeReaderActive == true
+        Constants.IS_CHECKIN_AVAILABLE = value?.data?.isCheckInAvailable==true
 
         // TODO : initiate successful logged in experience
         val appContext = context?.applicationContext ?: return

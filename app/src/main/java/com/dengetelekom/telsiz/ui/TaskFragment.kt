@@ -63,12 +63,10 @@ class TaskFragment : Fragment(), TaskRecyclerViewAdapter.OnItemClickListener {
                         Resource.Status.SUCCESS -> {
                             //loadingProgressBar.visibility = View.GONE
                             @Suppress("UNCHECKED_CAST")
-                            setCompanyName((resource.data as List<TaskModel>?))
-                            setCheckinAvailable(resource.data)
-                            setNFCBarcodeStatus(resource.data)
+
                             adapter = resource.data?.let { it1 ->
                                 TaskRecyclerViewAdapter(
-                                    it1,
+                                        it1 as List<TaskModel>,
                                     this@TaskFragment
                                 )
                             }
@@ -89,26 +87,6 @@ class TaskFragment : Fragment(), TaskRecyclerViewAdapter.OnItemClickListener {
         }
     }
 
-    private fun setCompanyName(data: List<TaskModel>?) {
-        if (data?.size != null && data.isNotEmpty()) {
-            transceiverViewModel.setCompanyName(data[0].companyName)
-
-        }
-    }
-
-    private fun setCheckinAvailable(data: List<TaskModel>?) {
-        if (data?.size != null && data.isNotEmpty()) {
-            transceiverViewModel.setCheckinAvailable(data[0].isCheckinAvailable)
-
-        }
-    }
-
-    private fun setNFCBarcodeStatus(data: List<TaskModel>?) {
-        if (data?.size != null && data.isNotEmpty()) {
-            Constants.NFC_READER_ACTIVE = data[0].nfcReaderActive == "1"||data[0].nfcReaderActive == "true"
-            Constants.BARCODE_READER_ACTIVE = data[0].barcodeReaderActive == "1"||data[0].barcodeReaderActive == "true"
-        }
-    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         transceiverViewModel.refreshState.observe(viewLifecycleOwner,
@@ -150,9 +128,7 @@ class TaskFragment : Fragment(), TaskRecyclerViewAdapter.OnItemClickListener {
                 it?.let { resource ->
                     when (resource.status) {
                         Resource.Status.SUCCESS -> {
-                            //loadingProgressBar.visibility = View.GONE
-                            setCompanyName(resource.data?.data)
-                            setNFCBarcodeStatus(resource.data?.data)
+
                             adapter = resource.data?.data?.let { it1 ->
                                 TaskRecyclerViewAdapter(
                                     it1,

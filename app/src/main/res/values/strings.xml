@@ -88,6 +88,6 @@
     <string name="btn_capture_image">Fotoğrafı Kaydet</string>
     <string name="image_capture_title">Foto Çek</string>
     <string name="checkout">Çıkış Oku</string>
-    <string name="checkin">Giriş Oku</string>
+    <string name="check_in">Giriş Oku</string>
     <string name="loading">İşlem sürüyor</string>
 </resources>

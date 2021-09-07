@@ -12,7 +12,7 @@ import retrofit2.http.*
 
 interface TransceiverService {
 
-    @POST("oauth/token")
+    @POST("api/v1/login")
     suspend fun token(@Body request: TokenRequestModel): TokenResponseModel
 
     @GET("tasks")

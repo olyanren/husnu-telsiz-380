@@ -20,10 +20,7 @@ data class TaskModel(
     @SerializedName("explanation_id") val explanationId: String,
     @SerializedName("location_id") val locationId: String,
     @SerializedName("explanation") val explanation: String,
-    @SerializedName("company_name") val companyName: String,
-    @SerializedName("is_checkin_available") val isCheckinAvailable: Boolean,
-    @SerializedName("nfc_reader_active") val nfcReaderActive : String?,
-    @SerializedName("barcode_reader_active") val barcodeReaderActive : String?,
+
     @SerializedName("todos") var todos: List<Int>?,
     @SerializedName("completed_date") val completedDate: String?
 ) : BaseModel {
