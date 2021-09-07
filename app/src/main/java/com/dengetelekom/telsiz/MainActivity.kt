@@ -13,13 +13,13 @@ import com.dengetelekom.telsiz.models.NfcObject
 import com.dengetelekom.telsiz.models.Resource
 import com.dengetelekom.telsiz.repositories.TransceiverRepository
 import com.dengetelekom.telsiz.ui.UrgentNotificationActivity
-import com.dengetelekom.telsiz.ui.ui.login.LoginFormState
 
 class MainActivity : AppCompatActivity() {
     private lateinit var textCompanyName: TextView
     private lateinit var btnGroupMain: LinearLayout
     private lateinit var btnRefresh: Button
     private lateinit var btnCheckIn: Button
+    private lateinit var btnNotifiation: Button
     private lateinit var btnCheckout: Button
     private lateinit var btnPreviousRecord: Button
     private lateinit var btnUrgentNotification: Button
@@ -32,7 +32,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         btnGroupMain = findViewById(R.id.btn_group_main)
-        btnCheckIn = findViewById(R.id.btn_checkin)
+        btnCheckIn = findViewById(R.id.btn_check_in)
+        btnNotifiation = findViewById(R.id.btn_notification)
         btnCheckout = findViewById(R.id.btn_checkout)
         btnRefresh = findViewById(R.id.btn_refresh)
         btnPreviousRecord = findViewById(R.id.btn_previous)
@@ -52,6 +53,7 @@ class MainActivity : AppCompatActivity() {
                     textCompanyName.text = Constants.COMPANY_NAME
                     btnCheckIn.visibility = if (Constants.IS_CHECKIN_AVAILABLE) View.VISIBLE else View.GONE
                     btnCheckout.visibility = if (Constants.IS_CHECKIN_AVAILABLE) View.VISIBLE else View.GONE
+                    btnNotifiation.visibility = if (Constants.IS_NOTIFICATON_AVAILABLE) View.VISIBLE else View.GONE
                     when (loginFormState) {
                         null -> return@Observer
                         "VISIBLE" -> {

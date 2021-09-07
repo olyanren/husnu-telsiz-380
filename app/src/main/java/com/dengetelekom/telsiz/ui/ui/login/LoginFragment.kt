@@ -169,7 +169,8 @@ class LoginFragment : Fragment() {
         Constants.COMPANY_NAME = value?.data?.companyName ?: ""
         Constants.NFC_READER_ACTIVE = value?.data?.nfcReaderActive == true
         Constants.BARCODE_READER_ACTIVE = value?.data?.barcodeReaderActive == true
-        Constants.IS_CHECKIN_AVAILABLE = value?.data?.isCheckInAvailable==true
+        Constants.IS_CHECKIN_AVAILABLE = value?.data?.isCheckInAvailable == true
+        Constants.IS_NOTIFICATON_AVAILABLE = value?.data?.isNotificationAvailable == true
 
         // TODO : initiate successful logged in experience
         val appContext = context?.applicationContext ?: return
@@ -182,7 +183,8 @@ class LoginFragment : Fragment() {
 
     private fun showLoginFailed() {
         val appContext = context?.applicationContext ?: return
-        Toast.makeText(appContext, resources.getText(R.string.login_failed), Toast.LENGTH_LONG).show()
+        Toast.makeText(appContext, resources.getText(R.string.login_failed), Toast.LENGTH_LONG)
+            .show()
     }
 
     override fun onDestroyView() {

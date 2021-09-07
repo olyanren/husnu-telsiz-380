@@ -42,9 +42,6 @@ import com.google.android.play.core.splitinstall.c
 import android.provider.MediaStore
 
 
-
-
-
 class ImageCaptureActivity : AppCompatActivity() {
 
     private lateinit var btnSavePhoto: Button
@@ -209,7 +206,7 @@ class ImageCaptureActivity : AppCompatActivity() {
 
         try {
             cameraProvider!!.bindToLifecycle(
-                this, cameraSelector!!, previewUseCase, imageCapture,analysisUseCase
+                this, cameraSelector!!, previewUseCase, imageCapture, analysisUseCase
             )
 
         } catch (illegalStateException: IllegalStateException) {
@@ -230,11 +227,11 @@ class ImageCaptureActivity : AppCompatActivity() {
             cameraExecutor!!,
             object : ImageCapture.OnImageSavedCallback {
                 override fun onError(exc: ImageCaptureException) {
-                    Log.e("IMAGE_CAPTURE",exc.message!!)
+                    Log.e("IMAGE_CAPTURE", exc.message!!)
                 }
 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-                    var path= (output.savedUri ?: Uri.fromFile(photoFile))
+                    var path = (output.savedUri ?: Uri.fromFile(photoFile))
                     selectedBitmap = when {
                         Build.VERSION.SDK_INT < Build.VERSION_CODES.P -> MediaStore.Images.Media.getBitmap(
                             contentResolver,
@@ -242,7 +239,7 @@ class ImageCaptureActivity : AppCompatActivity() {
                         )
                         else -> {
                             val source = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                                ImageDecoder.createSource( contentResolver, path)
+                                ImageDecoder.createSource(contentResolver, path)
                             } else {
                                 TODO("VERSION.SDK_INT < P")
                             }
