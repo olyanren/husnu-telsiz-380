@@ -39,8 +39,9 @@ class NotificationViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
-        holder.content.text = item.title
-        holder.title.text = item.content
+        holder.title.text = item.title
+        holder.content.text = item.content
+
         holder.createdAt.text = DateConverter(item.createdAt).date()
     }
 
