@@ -10,6 +10,7 @@ import com.dengetelekom.telsiz.R
 import com.dengetelekom.telsiz.databinding.FragmentNotificationBinding
 
 import com.dengetelekom.telsiz.databinding.FragmentTaskBinding
+import com.dengetelekom.telsiz.helpers.DateConverter
 import com.dengetelekom.telsiz.models.NotificationModel
 import com.dengetelekom.telsiz.models.TaskModel
 
@@ -38,17 +39,17 @@ class NotificationViewAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = values[position]
-        holder.name.text = item.title
-        holder.title.text = "${item.title}"
-        holder.gecerlilik.text = item.createdAt
+        holder.content.text = item.title
+        holder.title.text = item.content
+        holder.createdAt.text = DateConverter(item.createdAt).date()
     }
 
     override fun getItemCount(): Int = values.size
 
     inner class ViewHolder(binding: FragmentNotificationBinding) : RecyclerView.ViewHolder(binding.root) {
         val title: TextView = binding.textTitle
-        val gecerlilik: TextView = binding.textGecerlilik
-        val name: TextView = binding.textName
+        val createdAt: TextView = binding.textCreatedAt
+        val content: TextView = binding.textContent
 
         override fun toString(): String {
             return super.toString() + " '" + title.text + "'"

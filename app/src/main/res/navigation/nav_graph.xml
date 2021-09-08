@@ -25,6 +25,9 @@
         <action
             android:id="@+id/action_taskFragment_to_taskDetailFragment"
             app:destination="@id/taskDetailFragment" />
+        <action
+            android:id="@+id/action_taskFragment_to_notificationFragment"
+            app:destination="@id/notificationFragment" />
     </fragment>
     <fragment
         android:id="@+id/taskDetailFragment"
@@ -59,4 +62,8 @@
             android:id="@+id/action_taskExplanationFragment_to_taskDetailFragment"
             app:destination="@id/taskDetailFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/notificationFragment"
+        android:name="com.dengetelekom.telsiz.ui.NotificationFragment"
+        android:label="NotificationFragment" />
 </navigation>

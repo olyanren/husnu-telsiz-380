@@ -8,10 +8,12 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import com.dengetelekom.telsiz.factories.TransceiverViewModelFactory
 import com.dengetelekom.telsiz.models.NfcObject
 import com.dengetelekom.telsiz.models.Resource
 import com.dengetelekom.telsiz.repositories.TransceiverRepository
+import com.dengetelekom.telsiz.ui.TaskFragmentDirections
 import com.dengetelekom.telsiz.ui.UrgentNotificationActivity
 
 class MainActivity : AppCompatActivity() {
@@ -96,6 +98,13 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
+        btnNotifiation.setOnClickListener {
+            if (findNavController(R.id.nav_host_fragment).currentDestination?.id != R.id.notificationFragment) {
+                val action =  TaskFragmentDirections.actionTaskFragmentToNotificationFragment()
+                findNavController(R.id.nav_host_fragment).navigate(action)
+            }
+
+        }
 
     }
 
