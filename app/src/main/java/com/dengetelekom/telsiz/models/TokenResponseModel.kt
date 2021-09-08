@@ -10,5 +10,7 @@ data class TokenResponseModel (@SerializedName("token_type") val token_type : St
                                @SerializedName("company_name") val companyName: String,
                                @SerializedName("is_check_in_available") val isCheckInAvailable: Boolean,
                                @SerializedName("is_notification_available") val isNotificationAvailable: Boolean,
+                               @SerializedName("onesignal_app_id") val onesignalAppId: String?,
+                               @SerializedName("user_id") val userId: Int?,
                                @SerializedName("nfc_reader_active") val nfcReaderActive : Boolean?,
                                @SerializedName("barcode_reader_active") val barcodeReaderActive : Boolean?)

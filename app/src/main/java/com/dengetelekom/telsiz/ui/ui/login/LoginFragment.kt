@@ -170,7 +170,9 @@ class LoginFragment : Fragment() {
         Constants.NFC_READER_ACTIVE = value?.data?.nfcReaderActive == true
         Constants.BARCODE_READER_ACTIVE = value?.data?.barcodeReaderActive == true
         Constants.IS_CHECKIN_AVAILABLE = value?.data?.isCheckInAvailable == true
-        Constants.IS_NOTIFICATON_AVAILABLE = value?.data?.isNotificationAvailable == true
+        Constants.IS_NOTIFICATION_AVAILABLE = value?.data?.isNotificationAvailable == true
+        Constants.ONESIGNAL_APP_ID = value?.data?.onesignalAppId
+        Constants.USER_ID = value?.data?.userId
 
         // TODO : initiate successful logged in experience
         val appContext = context?.applicationContext ?: return

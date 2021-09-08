@@ -9,12 +9,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+
 import com.dengetelekom.telsiz.factories.TransceiverViewModelFactory
 import com.dengetelekom.telsiz.models.NfcObject
 import com.dengetelekom.telsiz.models.Resource
 import com.dengetelekom.telsiz.repositories.TransceiverRepository
 import com.dengetelekom.telsiz.ui.TaskFragmentDirections
 import com.dengetelekom.telsiz.ui.UrgentNotificationActivity
+import com.onesignal.OneSignal
 
 class MainActivity : AppCompatActivity() {
     private lateinit var textCompanyName: TextView
@@ -44,30 +46,34 @@ class MainActivity : AppCompatActivity() {
         textCompanyName = findViewById(R.id.text_company_name)
 
         transceiverViewModel = ViewModelProvider(
-                this,
-                TransceiverViewModelFactory(repository = TransceiverRepository())
+            this,
+            TransceiverViewModelFactory(repository = TransceiverRepository())
         ).get(
-                TransceiverViewModel::class.java
+            TransceiverViewModel::class.java
         )
 
         transceiverViewModel.refreshState.observe(this,
-                Observer { loginFormState ->
-                    textCompanyName.text = Constants.COMPANY_NAME
-                    btnCheckIn.visibility = if (Constants.IS_CHECKIN_AVAILABLE) View.VISIBLE else View.GONE
-                    btnCheckout.visibility = if (Constants.IS_CHECKIN_AVAILABLE) View.VISIBLE else View.GONE
-                    btnNotifiation.visibility = if (Constants.IS_NOTIFICATON_AVAILABLE) View.VISIBLE else View.GONE
-                    when (loginFormState) {
-                        null -> return@Observer
-                        "VISIBLE" -> {
-                            btnGroupMain.visibility = View.VISIBLE;
+            Observer { loginFormState ->
+                initOneSignal()
+                textCompanyName.text = Constants.COMPANY_NAME
+                btnCheckIn.visibility =
+                    if (Constants.IS_CHECKIN_AVAILABLE) View.VISIBLE else View.GONE
+                btnCheckout.visibility =
+                    if (Constants.IS_CHECKIN_AVAILABLE) View.VISIBLE else View.GONE
+                btnNotifiation.visibility =
+                    if (Constants.IS_NOTIFICATION_AVAILABLE) View.VISIBLE else View.GONE
+                when (loginFormState) {
+                    null -> return@Observer
+                    "VISIBLE" -> {
+                        btnGroupMain.visibility = View.VISIBLE;
 
-                        }
-                        "GONE" -> {
-                            btnGroupMain.visibility = View.GONE;
-
-                        }
                     }
-                })
+                    "GONE" -> {
+                        btnGroupMain.visibility = View.GONE;
+
+                    }
+                }
+            })
 
 
         findViewById<Button>(R.id.btn_logout).setOnClickListener {
@@ -75,7 +81,7 @@ class MainActivity : AppCompatActivity() {
         }
         btnUrgentNotification.setOnClickListener {
             startActivity(
-                    Intent(this, UrgentNotificationActivity::class.java),
+                Intent(this, UrgentNotificationActivity::class.java),
             )
         }
         btnRefresh.setOnClickListener {
@@ -86,26 +92,35 @@ class MainActivity : AppCompatActivity() {
         }
         btnCheckIn.setOnClickListener {
             startActivityForResult(
-                    Intent(this, ReadNcfActivity::class.java),
-                    LAUNCH_NFC_ACTIVITY_FOR_CHECKIN
+                Intent(this, ReadNcfActivity::class.java),
+                LAUNCH_NFC_ACTIVITY_FOR_CHECKIN
             )
 
         }
         btnCheckout.setOnClickListener {
             startActivityForResult(
-                    Intent(this, ReadNcfActivity::class.java),
-                    LAUNCH_NFC_ACTIVITY_FOR_CHECKOUT
+                Intent(this, ReadNcfActivity::class.java),
+                LAUNCH_NFC_ACTIVITY_FOR_CHECKOUT
             )
         }
 
         btnNotifiation.setOnClickListener {
             if (findNavController(R.id.nav_host_fragment).currentDestination?.id != R.id.notificationFragment) {
-                val action =  TaskFragmentDirections.actionTaskFragmentToNotificationFragment()
+                val action = TaskFragmentDirections.actionTaskFragmentToNotificationFragment()
                 findNavController(R.id.nav_host_fragment).navigate(action)
             }
 
         }
 
+    }
+
+    private fun initOneSignal() {
+        if (Constants.ONESIGNAL_APP_ID == null) return
+        OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE);
+
+        OneSignal.initWithContext(this)
+        OneSignal.setAppId(Constants.ONESIGNAL_APP_ID!!)
+        OneSignal.sendTag("userId",Constants.USER_ID.toString())
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -121,7 +136,7 @@ class MainActivity : AppCompatActivity() {
         val result = data?.getStringExtra("result")
         if (result == null) {
             Toast.makeText(this, R.string.barcode_read_cancelled, Toast.LENGTH_LONG)
-                    .show()
+                .show()
             return
         }
         if (resultCode == RESULT_CANCELED) {
@@ -135,15 +150,15 @@ class MainActivity : AppCompatActivity() {
                 when (resource.status) {
                     Resource.Status.SUCCESS -> {
                         Toast.makeText(this, resource.data?.message, Toast.LENGTH_LONG)
-                                .show()
+                            .show()
                     }
                     Resource.Status.ERROR -> {
                         Toast.makeText(this, resource.data?.message, Toast.LENGTH_LONG)
-                                .show()
+                            .show()
                     }
                     Resource.Status.LOADING -> {
                         Toast.makeText(this, R.string.loading, Toast.LENGTH_LONG)
-                                .show()
+                            .show()
                     }
                 }
             }
@@ -154,7 +169,7 @@ class MainActivity : AppCompatActivity() {
         val result = data?.getStringExtra("result")
         if (result == null) {
             Toast.makeText(this, R.string.barcode_read_cancelled, Toast.LENGTH_LONG)
-                    .show()
+                .show()
             return
         }
         if (resultCode == RESULT_CANCELED) {
@@ -168,15 +183,15 @@ class MainActivity : AppCompatActivity() {
                 when (resource.status) {
                     Resource.Status.SUCCESS -> {
                         Toast.makeText(this, resource.data?.message, Toast.LENGTH_LONG)
-                                .show()
+                            .show()
                     }
                     Resource.Status.ERROR -> {
                         Toast.makeText(this, resource.data?.message, Toast.LENGTH_LONG)
-                                .show()
+                            .show()
                     }
                     Resource.Status.LOADING -> {
                         Toast.makeText(this, R.string.loading, Toast.LENGTH_LONG)
-                                .show()
+                            .show()
                     }
                 }
             }
