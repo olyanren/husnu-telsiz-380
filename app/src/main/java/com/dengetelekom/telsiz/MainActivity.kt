@@ -11,10 +11,14 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 
 import com.dengetelekom.telsiz.factories.TransceiverViewModelFactory
+import com.dengetelekom.telsiz.helpers.AlertHelper
 import com.dengetelekom.telsiz.models.NfcObject
 import com.dengetelekom.telsiz.models.Resource
+
+import com.dengetelekom.telsiz.models.TaskModel
 import com.dengetelekom.telsiz.repositories.TransceiverRepository
 import com.dengetelekom.telsiz.ui.TaskFragmentDirections
+import com.dengetelekom.telsiz.ui.TaskRecyclerViewAdapter
 import com.dengetelekom.telsiz.ui.UrgentNotificationActivity
 import com.onesignal.OneSignal
 
@@ -91,10 +95,15 @@ class MainActivity : AppCompatActivity() {
             transceiverViewModel.previousRecord()
         }
         btnCheckIn.setOnClickListener {
+            val intent=Intent()
+            intent.putExtra("result","YURT")
+           // checkinRequest(intent, LAUNCH_NFC_ACTIVITY_FOR_CHECKIN)
             startActivityForResult(
                 Intent(this, ReadNcfActivity::class.java),
                 LAUNCH_NFC_ACTIVITY_FOR_CHECKIN
             )
+
+
 
         }
         btnCheckout.setOnClickListener {
@@ -144,21 +153,30 @@ class MainActivity : AppCompatActivity() {
             return
         }
 
-        Log.i("DENGETELEKOM_NFC", result)
+
         transceiverViewModel.checkin(NfcObject(result)).observe(this, Observer {
             it?.let { resource ->
                 when (resource.status) {
                     Resource.Status.SUCCESS -> {
-                        Toast.makeText(this, resource.data?.message, Toast.LENGTH_LONG)
-                            .show()
+                        it.message?.let { it1 ->
+                        AlertHelper.showInfoDialog(this,resources.getString(R.string.notify),
+                            it1) }
+
+                    }
+                    Resource.Status.API_ERROR -> {
+                        it.message?.let { it1 ->
+                            AlertHelper.showInfoDialog(this,resources.getString(R.string.notify),
+                                it1)
+                        }
                     }
                     Resource.Status.ERROR -> {
-                        Toast.makeText(this, resource.message, Toast.LENGTH_LONG)
-                            .show()
+                        it.message?.let { it1 ->
+                            AlertHelper.showInfoDialog(this,resources.getString(R.string.notify),
+                                it1)
+                        }
                     }
                     Resource.Status.LOADING -> {
-                        Toast.makeText(this, R.string.loading, Toast.LENGTH_LONG)
-                            .show()
+                        // loadingProgressBar.visibility = View.VISIBLE
                     }
                 }
             }

@@ -41,7 +41,7 @@ class TransceiverProvider {
         val service = getApiClient().create(TransceiverService::class.java)
         return service.previousTask()
     }
-    suspend fun checkin(nfc:NfcObject): ApiResponseModel {
+    suspend fun checkin(nfc:NfcObject): NetworkResponse<ApiResponseModel, RetrofitError> {
         val service = getApiClient().create(TransceiverService::class.java)
         return service.checkin(nfc)
     }

@@ -144,7 +144,13 @@ class TransceiverViewModel(private val repository: TransceiverRepository) : View
     fun checkin(nfc:NfcObject) = liveData {
         emit(Resource.loading(data = null))
         try {
-            emit(Resource.success(data = repository.checkin(nfc)))
+            when (val resp=repository.checkin(nfc)) {
+                is NetworkResponse.Success -> emit(Resource.success(data = resp.body.message))
+                is NetworkResponse.ApiError -> emit(resp.body.message.let { Resource.error(message = it,data = resp.body) })
+                is NetworkResponse.NetworkError -> throw java.lang.Exception()
+                is NetworkResponse.UnknownError -> throw java.lang.Exception()
+            }
+
         } catch (exception: Exception) {
             emit(
                 Resource.error(

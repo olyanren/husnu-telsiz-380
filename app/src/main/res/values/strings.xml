@@ -31,7 +31,7 @@
     <string name="invalid_username">Geçerli bir kullanıcı adı giriniz</string>
     <string name="invalid_password">Şifrenizi giriniz</string>
     <string name="login_failed">"Login failed"</string>
-    <string name="company_name">DEMO</string>
+    <string name="company_name"></string>
     <string name="text_demo">Demo</string>
     <string name="text_date">10/01/2021</string>
     <string name="demo_text_task_title">1. Tur - 22:00</string>

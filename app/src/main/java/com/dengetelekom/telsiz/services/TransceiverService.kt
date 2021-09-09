@@ -55,7 +55,7 @@ interface TransceiverService {
                             @Part file: MultipartBody.Part?): ApiResponseModel
 
     @POST("checkin")
-    suspend fun checkin(@Body  nfc: NfcObject): ApiResponseModel
+    suspend fun checkin(@Body  nfc: NfcObject): NetworkResponse<ApiResponseModel, RetrofitError>
 
     @POST("checkout")
     suspend fun checkout(@Body  nfc: NfcObject): ApiResponseModel
