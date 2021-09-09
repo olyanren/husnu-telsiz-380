@@ -153,7 +153,7 @@ class MainActivity : AppCompatActivity() {
                             .show()
                     }
                     Resource.Status.ERROR -> {
-                        Toast.makeText(this, resource.data?.message, Toast.LENGTH_LONG)
+                        Toast.makeText(this, resource.message, Toast.LENGTH_LONG)
                             .show()
                     }
                     Resource.Status.LOADING -> {

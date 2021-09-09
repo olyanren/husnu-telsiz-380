@@ -19,7 +19,6 @@ class TransceiverProvider {
 
     suspend fun token(request: TokenRequestModel): TokenResponseModel {
         val service = getBaseClient().create(TransceiverService::class.java)
-        Log.d("DengeTelsiz", Gson().toJson(request))
         return service.token(request)
     }
 
