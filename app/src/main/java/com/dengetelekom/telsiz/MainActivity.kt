@@ -158,21 +158,22 @@ class MainActivity : AppCompatActivity() {
             it?.let { resource ->
                 when (resource.status) {
                     Resource.Status.SUCCESS -> {
-                        it.message?.let { it1 ->
+                        it.data?.let { it1 ->
                         AlertHelper.showInfoDialog(this,resources.getString(R.string.notify),
-                            it1) }
+                            it1 as String
+                        ) }
 
                     }
                     Resource.Status.API_ERROR -> {
-                        it.message?.let { it1 ->
+                        it.data?.let { it1 ->
                             AlertHelper.showInfoDialog(this,resources.getString(R.string.notify),
-                                it1)
+                                it1 as String)
                         }
                     }
                     Resource.Status.ERROR -> {
-                        it.message?.let { it1 ->
+                        it.data?.let { it1 ->
                             AlertHelper.showInfoDialog(this,resources.getString(R.string.notify),
-                                it1)
+                                it1 as String)
                         }
                     }
                     Resource.Status.LOADING -> {
