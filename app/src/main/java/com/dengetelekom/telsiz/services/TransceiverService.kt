@@ -23,7 +23,7 @@ interface TransceiverService {
     @GET("notifications")
     suspend fun notifications(): NetworkResponse<NotificationResponseModel, RetrofitError>
     @GET("notifications/previous")
-    suspend fun previousNotification(): NotificationResponseModel
+    suspend fun previousNotification(@Query("last_notification_id") id: Int): NotificationResponseModel
 
 
     @GET("explanation-titles")

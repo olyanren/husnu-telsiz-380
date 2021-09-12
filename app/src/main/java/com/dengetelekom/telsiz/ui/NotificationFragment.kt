@@ -30,9 +30,11 @@ class NotificationFragment : Fragment(), NotificationViewAdapter.OnItemClickList
     private var columnCount = 1
     private lateinit var transceiverViewModel: TransceiverViewModel
     private lateinit var taskListRecyclerView: RecyclerView
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
+    private var lastNotificationId: Int = 0
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
         taskListRecyclerView =
             inflater.inflate(R.layout.fragment_task_list, container, false) as RecyclerView
         transceiverViewModel = ViewModelProvider(
@@ -60,16 +62,21 @@ class NotificationFragment : Fragment(), NotificationViewAdapter.OnItemClickList
                             @Suppress("UNCHECKED_CAST")
 
                             adapter = resource.data?.let { it1 ->
+
+                                val result = it1 as List<NotificationModel>
+                                if (result.isNotEmpty()) lastNotificationId = result[0].id;
                                 NotificationViewAdapter(
-                                        it1 as List<NotificationModel>,
+                                    result,
                                     this@NotificationFragment
                                 )
                             }
                         }
                         Resource.Status.ERROR -> {
                             it.message?.let { it1 ->
-                                AlertHelper.showInfoDialog(requireContext(),resources.getString(R.string.notify),
-                                    it1)
+                                AlertHelper.showInfoDialog(
+                                    requireContext(), resources.getString(R.string.notify),
+                                    it1
+                                )
                             }
                         }
                         Resource.Status.LOADING -> {
@@ -119,12 +126,13 @@ class NotificationFragment : Fragment(), NotificationViewAdapter.OnItemClickList
                 columnCount <= 1 -> LinearLayoutManager(context)
                 else -> GridLayoutManager(context, columnCount)
             }
-            transceiverViewModel.previousNotification().observe(requireActivity(), Observer {
+            transceiverViewModel.previousNotification(lastNotificationId).observe(requireActivity(), Observer {
                 it?.let { resource ->
                     when (resource.status) {
                         Resource.Status.SUCCESS -> {
 
                             adapter = resource.data?.data?.let { it1 ->
+                                if (it1.isNotEmpty()) lastNotificationId = it1[0].id;
                                 NotificationViewAdapter(
                                     it1,
                                     this@NotificationFragment
@@ -166,7 +174,7 @@ class NotificationFragment : Fragment(), NotificationViewAdapter.OnItemClickList
                 .show()
             return
         }
-         SharedPreferencesUtil.writeTask(requireContext(),item)
+        SharedPreferencesUtil.writeTask(requireContext(), item)
         val action =
             TaskFragmentDirections.actionTaskFragmentToTaskDetailFragment()
         view?.findNavController()?.navigate(action)

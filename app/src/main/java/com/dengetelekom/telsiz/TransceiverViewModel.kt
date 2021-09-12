@@ -115,10 +115,10 @@ class TransceiverViewModel(private val repository: TransceiverRepository) : View
             )
         }
     }
-    fun previousNotification() = liveData {
+    fun previousNotification(id:Int) = liveData {
         emit(Resource.loading(data = null))
         try {
-            emit(Resource.success(data = repository.previousNotification()))
+            emit(Resource.success(data = repository.previousNotification(id)))
         } catch (exception: Exception) {
             emit(
                 Resource.error(

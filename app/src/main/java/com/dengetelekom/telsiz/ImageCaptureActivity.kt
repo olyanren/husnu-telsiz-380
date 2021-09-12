@@ -163,7 +163,7 @@ class ImageCaptureActivity : AppCompatActivity() {
 
         previewUseCase = Preview.Builder()
             .setTargetAspectRatio(screenAspectRatio)
-            .setTargetRotation(Surface.ROTATION_0)
+            .setTargetRotation(Surface.ROTATION_90)
             .build()
         previewUseCase!!.setSurfaceProvider(previewView!!.surfaceProvider)
 
