@@ -196,7 +196,7 @@ class ImageCaptureActivity : AppCompatActivity() {
             .setTargetAspectRatio(screenAspectRatio)
             // Set initial target rotation, we will have to call this again if rotation changes
             // during the lifecycle of this use case
-            .setTargetRotation(Surface.ROTATION_0)
+            .setTargetRotation(Surface.ROTATION_90)
             .build()
         cameraExecutor = Executors.newSingleThreadExecutor()
 
