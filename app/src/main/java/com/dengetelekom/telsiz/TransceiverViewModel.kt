@@ -11,6 +11,8 @@ import com.dengetelekom.telsiz.models.*
 import com.dengetelekom.telsiz.repositories.TransceiverRepository
 import com.dengetelekom.telsiz.retrofitcoroutines.remote.NetworkResponse
 import com.dengetelekom.telsiz.ui.ui.login.LoginFormState
+import org.json.JSONObject
+import retrofit2.HttpException
 
 class TransceiverViewModel(private val repository: TransceiverRepository) : ViewModel() {
     private val _loginForm = MutableLiveData<LoginFormState>()
@@ -106,7 +108,14 @@ class TransceiverViewModel(private val repository: TransceiverRepository) : View
                 is NetworkResponse.UnknownError -> throw java.lang.Exception()
             }
 
-        } catch (exception: Exception) {
+        } catch (exc: HttpException) {
+            emit(
+                Resource.error(
+                    data = null, message = JSONObject(exc.response()?.errorBody()?.string().toString()).getString("message")
+
+                )
+            )
+        }catch (exception: Exception) {
             emit(
                 Resource.error(
                     data = null, message = exception.message
@@ -119,7 +128,14 @@ class TransceiverViewModel(private val repository: TransceiverRepository) : View
         emit(Resource.loading(data = null))
         try {
             emit(Resource.success(data = repository.previousNotification(id)))
-        } catch (exception: Exception) {
+        }  catch (exc: HttpException) {
+            emit(
+                Resource.error(
+                    data = null, message = JSONObject(exc.response()?.errorBody()?.string().toString()).getString("message")
+
+                )
+            )
+        }catch (exception: Exception) {
             emit(
                 Resource.error(
                     data = null, message = exception.message
