@@ -14,7 +14,7 @@ class Constants {
         var ONESIGNAL_APP_ID: String? = null
         var USER_ID: Int? = null
 
-       const val API_BASE_URL: String = "http://demo.dengetelekom.com/"
+       const val API_BASE_URL: String = "http://tepe.dengetelekom.com/"
         //const val API_BASE_URL: String = "http://localhost:8000/"
         const val API_URL: String = API_BASE_URL + "api/v1/"
         const val SHOW_UPLOAD_PHOTO: Boolean = true

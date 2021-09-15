@@ -69,7 +69,14 @@ class TransceiverViewModel(private val repository: TransceiverRepository) : View
                 username, password
             )
             emit(Resource.success(data = repository.token(request)))
-        } catch (exception: Exception) {
+        } catch (exc: HttpException) {
+            emit(
+                Resource.error(
+                    data = null, message = JSONObject(exc.response()?.errorBody()?.string().toString()).getString("message")
+
+                )
+            )
+        }catch (exception: Exception) {
             emit(
                 Resource.error(
                     data = null, message = exception.message
@@ -148,6 +155,12 @@ class TransceiverViewModel(private val repository: TransceiverRepository) : View
         emit(Resource.loading(data = null))
         try {
             emit(Resource.success(data = repository.previousTask()))
+        }catch (exc: HttpException) {
+            emit(
+                Resource.error(
+                    data = null, message = JSONObject(exc.response()?.errorBody()?.string().toString()).getString("message")
+                )
+            )
         } catch (exception: Exception) {
             emit(
                 Resource.error(
@@ -180,6 +193,12 @@ class TransceiverViewModel(private val repository: TransceiverRepository) : View
         emit(Resource.loading(data = null))
         try {
             emit(Resource.success(data = repository.checkout(nfc)))
+        }catch (exc: HttpException) {
+            emit(
+                Resource.error(
+                    data = null, message = JSONObject(exc.response()?.errorBody()?.string().toString()).getString("message")
+                )
+            )
         } catch (exception: Exception) {
             emit(
                 Resource.error(
@@ -193,7 +212,13 @@ class TransceiverViewModel(private val repository: TransceiverRepository) : View
         emit(Resource.loading(data = null))
         try {
             emit(Resource.success(data = repository.explanationTitles()))
-        } catch (exception: Exception) {
+        } catch (exc: HttpException) {
+            emit(
+                Resource.error(
+                    data = null, message = JSONObject(exc.response()?.errorBody()?.string().toString()).getString("message")
+                )
+            )
+        }catch (exception: Exception) {
             emit(
                 Resource.error(
                     data = null, message = exception.message
@@ -207,6 +232,12 @@ class TransceiverViewModel(private val repository: TransceiverRepository) : View
         emit(Resource.loading(data = null))
         try {
             emit(Resource.success(data = repository.todos()))
+        }catch (exc: HttpException) {
+            emit(
+                Resource.error(
+                    data = null, message = JSONObject(exc.response()?.errorBody()?.string().toString()).getString("message")
+                )
+            )
         } catch (exception: Exception) {
             emit(
                 Resource.error(
@@ -258,6 +289,12 @@ class TransceiverViewModel(private val repository: TransceiverRepository) : View
         emit(Resource.loading(data = null))
         try {
             emit(Resource.success(data = repository.uploadPhoto(taskId,locationId, fileUri)))
+        }catch (exc: HttpException) {
+            emit(
+                Resource.error(
+                    data = null, message = JSONObject(exc.response()?.errorBody()?.string().toString()).getString("message")
+                )
+            )
         } catch (exception: Exception) {
             emit(
                 Resource.error(
@@ -271,6 +308,12 @@ class TransceiverViewModel(private val repository: TransceiverRepository) : View
         emit(Resource.loading(data = null))
         try {
             emit(Resource.success(data = repository.uploadUrgentNotificationPhoto(explanation, fileUri)))
+        }catch (exc: HttpException) {
+            emit(
+                Resource.error(
+                    data = null, message = JSONObject(exc.response()?.errorBody()?.string().toString()).getString("message")
+                )
+            )
         } catch (exception: Exception) {
             emit(
                 Resource.error(
@@ -284,6 +327,12 @@ class TransceiverViewModel(private val repository: TransceiverRepository) : View
         emit(Resource.loading(data = null))
         try {
             emit(Resource.success(data = repository.addTodos(request)))
+        }catch (exc: HttpException) {
+            emit(
+                Resource.error(
+                    data = null, message = JSONObject(exc.response()?.errorBody()?.string().toString()).getString("message")
+                )
+            )
         } catch (exception: Exception) {
             emit(
                 Resource.error(
@@ -298,6 +347,12 @@ class TransceiverViewModel(private val repository: TransceiverRepository) : View
         emit(Resource.loading(data = null))
         try {
             emit(Resource.success(data = repository.complete(request)))
+        }catch (exc: HttpException) {
+            emit(
+                Resource.error(
+                    data = null, message = JSONObject(exc.response()?.errorBody()?.string().toString()).getString("message")
+                )
+            )
         } catch (exception: Exception) {
             emit(
                 Resource.error(
