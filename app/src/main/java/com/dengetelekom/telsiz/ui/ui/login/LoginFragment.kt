@@ -138,7 +138,7 @@ class LoginFragment : Fragment() {
                     }
                     Resource.Status.ERROR -> {
                         loadingProgressBar.visibility = View.GONE
-                        showLoginFailed()
+                        showLoginFailed(resource.message)
                     }
                     Resource.Status.LOADING -> {
                         loadingProgressBar.visibility = View.VISIBLE
@@ -183,9 +183,9 @@ class LoginFragment : Fragment() {
 
     }
 
-    private fun showLoginFailed() {
+    private fun showLoginFailed(message: String?) {
         val appContext = context?.applicationContext ?: return
-        Toast.makeText(appContext, resources.getText(R.string.login_failed), Toast.LENGTH_LONG)
+        Toast.makeText(appContext, message ?: resources.getText(R.string.login_failed), Toast.LENGTH_LONG)
             .show()
     }
 
